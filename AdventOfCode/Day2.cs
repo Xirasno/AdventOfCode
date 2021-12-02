@@ -11,20 +11,21 @@ namespace AdventOfCode
             int depth = 0, dist = 0;
             string[] input = Console.ReadLine().Split(' ');
 
-            while (input[0] != "stop")
+            while (input[0] != "")
             {
+                int val = int.Parse(input[1]);
                 switch (input[0])
                 {
                     case "forward":
-                        dist += int.Parse(input[1]);
+                        dist += val;
                         break;
 
                     case "down":
-                        depth += int.Parse(input[1]);
+                        depth += val;
                         break;
 
                     case "up":
-                        depth -= int.Parse(input[1]);
+                        depth -= val;
                         break;
                 }
                 input = Console.ReadLine().Split(' ');
@@ -37,21 +38,22 @@ namespace AdventOfCode
             int depth = 0, dist = 0, aim = 0;
             string[] input = Console.ReadLine().Split(' ');
 
-            while (input[0] != "stop")
+            while (input[0] != "")
             {
+                int val = int.Parse(input[1]);
                 switch (input[0])
                 {
                     case "forward":
-                        dist += int.Parse(input[1]);
-                        depth += aim * int.Parse(input[1]);
+                        dist += val;
+                        depth += aim * val;
                         break;
 
                     case "down":
-                        aim += int.Parse(input[1]);
+                        aim += val;
                         break;
 
                     case "up":
-                        aim -= int.Parse(input[1]);
+                        aim -= val;
                         break;
                 }
                 input = Console.ReadLine().Split(' ');

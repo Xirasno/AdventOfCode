@@ -12,3 +12,17 @@ C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\Advent
 C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.dll
 C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.pdb
 C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.genruntimeconfig.cache
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.csproj.AssemblyReference.cache
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.AssemblyInfoInputs.cache
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.AssemblyInfo.cs
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.csproj.CoreCompileInputs.cache
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.dll
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.pdb
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.exe
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.deps.json
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.runtimeconfig.json
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.runtimeconfig.dev.json
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.dll
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\bin\Debug\netcoreapp3.1\AdventOfCode.pdb
+C:\Users\ROB6035\OneDrive - Robeco Nederland B.V\Documents\Advent of Code\AdventOfCode2021\AdventOfCode\obj\Debug\netcoreapp3.1\AdventOfCode.genruntimeconfig.cache
