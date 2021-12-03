@@ -8,19 +8,18 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            string input = Console.ReadLine();
-            string[] splitInput = input.Split(' ');
+            string[] input = Console.ReadLine().Split(' ');
             var assembly = Assembly.LoadFrom("./AdventOfCode.dll");
 
-            if (splitInput.Length == 2)
+            if (input.Length == 2)
             {
-                var type = assembly.GetType($"AdventOfCode.Day{splitInput[0]}");
-                type.GetMethod($"Part{splitInput[1]}").Invoke(null, null);
+                var type = assembly.GetType($"AdventOfCode.Day{input[0]}");
+                type.GetMethod($"Part{input[1]}").Invoke(null, null);
             }
             else
             {
                 var type = assembly.DefinedTypes.Where(t => t.Name.StartsWith("Day")).Last();
-                type.DeclaredMethods.Last().Invoke(null, new[] { input });
+                type.DeclaredMethods.Last().Invoke(null, null);
             }
         }
     }
@@ -37,12 +36,12 @@ namespace AdventOfCode
 {
     public static class DayX
     {
-        public static void Part1(string firstLine = "")
+        public static void Part1()
         {
 
         }
 
-        public static void Part2(string firstLine = "")
+        public static void Part2()
         {
 
         }
