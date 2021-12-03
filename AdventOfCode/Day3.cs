@@ -7,7 +7,7 @@ namespace AdventOfCode
 {
     public static class Day3
     {
-        public static void Part1()
+        public static void Part1(string firstLine = "")
         {
             List<string> bits = new List<string>();
             string input;
@@ -28,7 +28,7 @@ namespace AdventOfCode
             Console.WriteLine($"Gamma = {gamma}; Epsilon = {epsilon}; Power consumption = {gamma * epsilon}");
         }
 
-        public static void Part2()
+        public static void Part2(string firstLine = "")
         {
             List<string> bits = new List<string>();
             string input;
