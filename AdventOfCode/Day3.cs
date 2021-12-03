@@ -41,15 +41,21 @@ namespace AdventOfCode
             inputLength = bits[0].Length;
 
             int oxigen = 0, co2 = 0, i = 0;
-            List<string> o2bits = new List<string>(bits);
+            List<string> o2bits = new List<string>(bits), co2bits = new List<string>(bits);
             while (o2bits.Count > 1)
             {
                 o2bits = GetMostCommonBit(o2bits, i);
                 i++;
             }
+            i = 0;
+            while (co2bits.Count > 1)
+            {
+                co2bits = GetLeastCommonBit(co2bits, i);
+                i++;
+            }
 
             oxigen = ConvertToBits(o2bits.First());
-            co2 = oxigen ^ ((1 << inputLength) - 1);
+            co2 = ConvertToBits(co2bits.First());
 
             Console.WriteLine($"Oxigen = {oxigen}; CO2 = {co2}; Life Support = {oxigen * co2}");
         }
@@ -70,7 +76,17 @@ namespace AdventOfCode
             if (newBits.Sum() >= (newBits.Count() / 2.0f))
                 return bits.Where(s => s.ElementAt(pos) == '1').ToList();
 
-            else return bits.Where(s => s.ElementAt(pos) == '0').ToList(); ;
+            else return bits.Where(s => s.ElementAt(pos) == '0').ToList(); 
+        }
+
+        private static List<string> GetLeastCommonBit(List<string> bits, int pos)
+        {
+            var newBits = bits.Select(s => s.ElementAt(pos).ToString())
+                .Select(c => int.Parse(c));
+            if (newBits.Sum() >= (newBits.Count() / 2.0f))
+                return bits.Where(s => s.ElementAt(pos) == '0').ToList();
+
+            else return bits.Where(s => s.ElementAt(pos) == '1').ToList(); 
         }
 
         private static int ConvertToBits(string b)
