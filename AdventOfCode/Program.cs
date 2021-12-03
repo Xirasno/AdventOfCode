@@ -8,19 +8,15 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            string[] input = Console.ReadLine().Split(' ');
             var assembly = Assembly.LoadFrom("./AdventOfCode.dll");
-
-            if (input.Length == 2)
-            {
-                var type = assembly.GetType($"AdventOfCode.Day{input[0]}");
-                type.GetMethod($"Part{input[1]}").Invoke(null, null);
-            }
-            else
-            {
-                var type = assembly.DefinedTypes.Where(t => t.Name.StartsWith("Day")).Last();
-                type.DeclaredMethods.Last().Invoke(null, null);
-            }
+            TypeInfo type = assembly.DefinedTypes
+                .Where(t => t.Name.StartsWith("Day"))
+                .OrderByDescending(t => t.Name.Remove(0, 3))
+                .FirstOrDefault();
+            type.DeclaredMethods
+                .OrderByDescending(m => m.Name.Last())
+                .FirstOrDefault()
+                .Invoke(null, null);
         }
     }
 }

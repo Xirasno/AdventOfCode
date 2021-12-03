@@ -6,7 +6,7 @@ namespace AdventOfCode
 {
     public static class Day2
     {
-        public static void Part1(string firstLine = "")
+        public static void Part1()
         {
             int depth = 0, dist = 0;
             string[] input = Console.ReadLine().Split(' ');
@@ -33,7 +33,7 @@ namespace AdventOfCode
             Console.WriteLine($"depth = {depth}; dist = {dist}; total = {depth * dist}");
         }
 
-        public static void Part2(string firstLine = "")
+        public static void Part2()
         {
             int depth = 0, dist = 0, aim = 0;
             string[] input = Console.ReadLine().Split(' ');

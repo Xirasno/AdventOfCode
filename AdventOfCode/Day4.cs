@@ -7,14 +7,13 @@ namespace AdventOfCode
 {
     public static class Day4
     {
-        public static void Part1(string firstLine = "")
+        public static void Part1()
         {
 
         }
 
-        public static void Part2(string firstLine = "")
+        public static void Part2()
         {
-            Console.WriteLine(firstLine);
         }
     }
 }
