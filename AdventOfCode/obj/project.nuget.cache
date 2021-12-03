@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "uaRpwsZJ7IjEDL7vd7cswDZnUIS9ScCpqbbCxvAnGQsg0tjflPfMfwqu7AORR1/UVm7jfIn/07zwS65RPSRV1w==",
+  "dgSpecHash": "SE9HSA9szk6FtLkOu8+HwShh6DIpjx78oXYZfCbxHRK1B6JxpQVWz2eWHv7M6hjr1UZGVMaGs6rCjzmd6TiSUg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "E:\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Xirasno\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.18\\microsoft.netcore.app.host.win-x64.3.1.18.nupkg.sha512"
+  ],
   "logs": []
 }
