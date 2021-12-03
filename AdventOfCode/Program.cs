@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace AdventOfCode
 {
@@ -6,35 +7,14 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            string input = Console.ReadLine();
-            switch (input)
+            string input = "";
+            while (input.Length != 2)
             {
-                case "11":
-                    Day1.Part1();
-                    break;
-
-                case "12":
-                    Day1.Part2();
-                    break;
-
-                case "21":
-                    Day2.Part1();
-                    break;
-                case "22":
-                    Day2.Part2();
-                    break;
-
-                case "31":
-                    Day3.Part1();
-                    break;
-
-                case "32":
-                    Day3.Part2();
-                    break;
-
-                default:
-                    break;
+                input = Console.ReadLine();
             }
+            var assembly = Assembly.LoadFrom("./AdventOfCode.dll");
+            var type = assembly.GetType($"AdventOfCode.Day{input[0]}");
+            type.GetMethod($"Part{input[1]}").Invoke(null, null);
         }
     }
 }
