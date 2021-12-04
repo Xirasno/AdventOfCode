@@ -14,6 +14,7 @@ namespace AdventOfCode
                 .OrderByDescending(t => t.Name.Remove(0, 3))
                 .FirstOrDefault();
             type.DeclaredMethods
+                .Where(t => t.Name.StartsWith("Part"))
                 .OrderByDescending(m => m.Name.Last())
                 .FirstOrDefault()
                 .Invoke(null, null);
