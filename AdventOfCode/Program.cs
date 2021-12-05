@@ -38,7 +38,7 @@ namespace AdventOfCode
 
         }
 
-        public static void Part2()
+        /*public static void Part2()
         {
 
         }
