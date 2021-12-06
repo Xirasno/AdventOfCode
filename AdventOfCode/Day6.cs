@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class DayX
+    public static class Day6
     {
         public static void Part1()
         {
