@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AdventOfCode
 {
-    public static class Day3
+    public static class Day03
     {
         public static void Part1()
         {

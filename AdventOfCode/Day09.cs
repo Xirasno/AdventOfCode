@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day9
+    public static class Day09
     {
         public static List<(int, int)> CheckedCoords;
         public static void Part1()
