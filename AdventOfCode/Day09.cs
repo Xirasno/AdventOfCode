@@ -100,7 +100,7 @@ namespace AdventOfCode
         public static void Part2()
         {
             string input;
-            List<List<int>> coords = new List<List<int>>();
+            List<List<int>> coords = new();
             while ((input = Console.ReadLine()) != "")
             {
                 coords.Add(new List<int>());
@@ -109,7 +109,7 @@ namespace AdventOfCode
             }
 
             CheckedCoords = new List<(int, int)>();
-            List<int> riskLevel = new List<int>();
+            List<int> riskLevel = new();
 
             for (int i = 0; i < coords.Count; i++)
                 for (int j = 0; j < coords.ElementAt(i).Count; j++)
@@ -117,7 +117,7 @@ namespace AdventOfCode
                     var elem = coords.ElementAt(i).ElementAt(j);
                     if (elem == 9 || CheckedCoords.Contains((i, j)))
                         continue;
-                    riskLevel.Add(FindBasin(coords, (i, j), new List<(int, int)>(), 0));
+                    riskLevel.Add(FindBasin(coords, (i, j)));
                 }
             List<int> top3 = new();
             for (int i = 0; i < 3; i++)
@@ -129,161 +129,23 @@ namespace AdventOfCode
             Console.WriteLine(top3.Aggregate((e1, e2) => e1 * e2));
         }
 
-        private static int FindBasin(List<List<int>> coords, (int, int) loc, List<(int, int)> curBasin, int risk)
+        private static int FindBasin(List<List<int>> coords, (int, int) loc)
         {
-            var elem = coords.ElementAt(loc.Item1).ElementAt(loc.Item2);
+            int elem;
+            try { elem = coords.ElementAt(loc.Item1).ElementAt(loc.Item2); }
+            catch { return 0; }
 
-            if (curBasin.Contains(loc) || elem == 9)
+            if (CheckedCoords.Contains(loc) || elem == 9)
                 return 0;
 
-            curBasin.Add(loc);
             CheckedCoords.Add(loc);
             var riskLevel = 0;
 
-            if (loc.Item1 == 0)
-            {
-                if (loc.Item2 == 0)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-
-                else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                }
-
-                else
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-            }
-
-            else if (loc.Item1 == coords.Count - 1)
-            {
-                if (loc.Item2 == 0)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-
-                else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                }
-
-                else
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-            }
-
-            else
-            {
-                if (loc.Item2 == 0)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-
-                else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                }
-
-                else
-                {
-                    riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1), curBasin, riskLevel);
-                    riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1), curBasin, riskLevel);
-                }
-            }
+            riskLevel += FindBasin(coords, (loc.Item1 - 1, loc.Item2));
+            riskLevel += FindBasin(coords, (loc.Item1 + 1, loc.Item2));
+            riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 - 1));
+            riskLevel += FindBasin(coords, (loc.Item1, loc.Item2 + 1)); 
             return riskLevel + 1;
-        }
-
-        private static bool IsLowest((int, int) loc, List<List<int>> coords)
-        {
-            var elem = coords.ElementAt(loc.Item1).ElementAt(loc.Item2);
-            if (loc.Item1 == 0)
-            {
-                if (loc.Item2 == 0)
-                {
-                    if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2))
-                    {
-                        return true;
-                    }
-                }
-
-                else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-                {
-                    if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2))
-                    {
-                        return true;
-                    }
-                }
-
-                else if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2) && elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1))
-                {
-                    return true;
-                }
-            }
-
-            else if (loc.Item1 == coords.Count - 1)
-            {
-                if (loc.Item2 == 0)
-                {
-                    if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2))
-                    {
-                        return true;
-                    }
-                }
-
-                else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-                {
-                    if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2))
-                    {
-                        return true;
-                    }
-                }
-
-                else if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2) && elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1))
-                {
-                    return true;
-                }
-            }
-
-            else if (loc.Item2 == 0)
-            {
-                if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2))
-                {
-                    return true;
-                }
-            }
-
-            else if (loc.Item2 == coords.ElementAt(loc.Item1).Count - 1)
-            {
-                if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2))
-                {
-                    return true;
-                }
-            }
-
-            else if (elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 + 1) && elem < coords.ElementAt(loc.Item1 + 1).ElementAt(loc.Item2) && elem < coords.ElementAt(loc.Item1).ElementAt(loc.Item2 - 1) && elem < coords.ElementAt(loc.Item1 - 1).ElementAt(loc.Item2))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
