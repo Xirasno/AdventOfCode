@@ -8,34 +8,29 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Xirasno\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\ROB6035\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+      "projectUniqueName": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
       "projectName": "AdventOfCode",
-      "projectPath": "E:\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
-      "packagesPath": "C:\\Users\\Xirasno\\.nuget\\packages\\",
-      "outputPath": "E:\\AdventOfCode2021\\AdventOfCode\\obj\\",
+      "projectPath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+      "packagesPath": "C:\\Users\\ROB6035\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Xirasno\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\ROB6035\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://robeco.pkgs.visualstudio.com/71120899-9ab9-46a8-a66e-271b6b77ccf0/_packaging/PSFeed/nuget/v3/index.json": {},
+        "https://robeco.pkgs.visualstudio.com/_packaging/CSSTestFeed%40Local/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
@@ -62,12 +57,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.12, 5.0.12]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
