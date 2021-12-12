@@ -92,7 +92,7 @@ namespace AdventOfCode
                     paths++;
                     continue;
                 }
-                if (c.Small == true && ((curPath.Where(x => x.Small).GroupBy(x => x.Name).Any(x => x.Count() > 1) && curPath.Contains(c)) || curPath.Where(cave => c.Name == cave.Name).Count() == SmallCaves))
+                if (c.Small && ((curPath.Where(x => x.Small).GroupBy(x => x.Name).Any(x => x.Count() > 1) && curPath.Contains(c)) || curPath.Where(cave => c.Name == cave.Name).Count() == SmallCaves))
                     continue;
                 paths += FindPath(c, curPath);
             }
