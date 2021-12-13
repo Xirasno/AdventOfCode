@@ -66,7 +66,7 @@ namespace AdventOfCode
             List<int> foldsX = new();
 
 
-            bool[,] graph = new bool[maxX, maxY + 1];
+            bool[,] graph = new bool[maxX, maxY];
             bool[,] newGraph = graph;
 
             foreach ((int x, int y) in coords)
@@ -94,9 +94,11 @@ namespace AdventOfCode
         {
             bool[,] newGraph = new bool[x, graph.GetLength(1)];
             for (int j = 0; j < newGraph.GetLength(1); j++)
-                for (int i = 0; i < newGraph.GetLength(0); i++)
+                for (int i = 0, k = x; i < newGraph.GetLength(0); i++, k--)
                 {
-                    newGraph[i, j] = graph[i, j] || graph[graph.GetLength(0) - 1 - i, j];
+                        newGraph[i, j] = graph[i, j];
+                    if (x + k < graph.GetLength(0))
+                        newGraph[i, j] |= graph[x + k, j];
                 }
 
             return newGraph;
@@ -105,10 +107,12 @@ namespace AdventOfCode
         private static bool[,] FoldGraphY(bool [,] graph, int y)
         {
             bool[,] newGraph = new bool[graph.GetLength(0), y];
-            for (int j = 0; j < newGraph.GetLength(1); j++)
-                for (int i = 0; i < newGraph.GetLength(0); i++)
+            for (int i = 0; i < newGraph.GetLength(0); i++)
+                for (int j = 0, k = y; j < newGraph.GetLength(1); j++, k--)
                 {
-                    newGraph[i, j] = graph[i, j] || graph[i, graph.GetLength(1) - 1 - j];
+                    newGraph[i, j] = graph[i, j];
+                    if (y + k < graph.GetLength(1))
+                        newGraph[i, j] |= graph[i, y + k];
                 }
 
             return newGraph;
