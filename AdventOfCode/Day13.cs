@@ -66,7 +66,7 @@ namespace AdventOfCode
             List<int> foldsX = new();
 
 
-            bool[,] graph = new bool[maxX, maxY];
+            bool[,] graph = new bool[maxX, maxY + 1];
             bool[,] newGraph = graph;
 
             foreach ((int x, int y) in coords)
