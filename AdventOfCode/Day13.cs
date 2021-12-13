@@ -92,7 +92,7 @@ namespace AdventOfCode
 
         private static bool[,] FoldGraphX(bool [,] graph, int x)
         {
-            bool[,] newGraph = new bool[x, graph.GetLength(1)];
+            bool[,] newGraph = new bool[Math.Min(x, graph.GetLength(0)), graph.GetLength(1)];
             for (int j = 0; j < newGraph.GetLength(1); j++)
                 for (int i = 0, k = x; i < newGraph.GetLength(0); i++, k--)
                 {
@@ -106,7 +106,7 @@ namespace AdventOfCode
 
         private static bool[,] FoldGraphY(bool [,] graph, int y)
         {
-            bool[,] newGraph = new bool[graph.GetLength(0), y];
+            bool[,] newGraph = new bool[graph.GetLength(0), Math.Min(y, graph.GetLength(1))];
             for (int i = 0; i < newGraph.GetLength(0); i++)
                 for (int j = 0, k = y; j < newGraph.GetLength(1); j++, k--)
                 {
