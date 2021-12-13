@@ -85,7 +85,7 @@ namespace AdventOfCode
                 for (int i = 0; i < newGraph.GetLength(0); i++)
                     if (newGraph[i, j])
                         Console.Write("#");
-                    else Console.Write(".");
+                    else Console.Write(" ");
                 Console.WriteLine();
             }
         }
