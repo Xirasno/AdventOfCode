@@ -76,7 +76,8 @@ namespace AdventOfCode
             polymer.Add((lastChar, ' '), 1);
             var occurence = polymer
                 .GroupBy(x => x.Key.Item1)
-                .Select(x => x.Select(y => y.Value).Aggregate((a, b) => a + b))
+                .Select(x => x.Select(y => y.Value)
+                              .Aggregate((a, b) => a + b))
                 .ToList();
 
             occurence.Sort();
