@@ -10,7 +10,7 @@ namespace AdventOfCode
         private static Dictionary<(char, char), long> Template;
         public static void Part1()
         {
-            string template = Console.ReadLine();
+            string polymer = Console.ReadLine();
             Console.ReadLine();
             Dictionary<(char, char), string> map = new();
             string input = "";
@@ -23,10 +23,10 @@ namespace AdventOfCode
 
             for (int i = 0; i < 10; i++)
             {
-                template = template.AddLetters(map);
+                polymer = polymer.AddLetters(map);
             }
 
-            var occurence = template
+            var occurence = polymer
                 .GroupBy(x => x)
                 .Select(x => x.Count())
                 .ToList();
@@ -37,23 +37,17 @@ namespace AdventOfCode
         public static void Part2()
         {
             string input = Console.ReadLine();
+            char lastChar = input[^1];
             Console.ReadLine();
 
-            List<(char, char)> templ = new();
+            Dictionary<(char, char), long> polymer = new();
             for (int i = 0; i < input.Length - 1; i++)
-                templ.Add((input[i], input[i + 1]));
-            char lastChar = input[input.Length - 1];
-
-            Template = new();
-            Dictionary<(char, char), long> template = new();
-            foreach ((char, char) c in templ)
             {
-                if (!Template.Any(ch => ch.Key == c))
-                {
-                    Template.Add(c, 0);
-                    template.Add(c, 0);
-                }
-                template[c]++;
+                var c = (input[i], input[i + 1]);
+                if (!polymer.Any(ch => ch.Key == c))
+                    polymer.Add(c, 0);
+
+                polymer[c]++;
             }
 
             Dictionary<(char, char), (char, char, char)> map = new();
@@ -63,65 +57,56 @@ namespace AdventOfCode
                 splitInput = input.Split(" -> ");
                 map.Add((splitInput[0][0], splitInput[0][1]), (splitInput[0][0], splitInput[1][0], splitInput[0][1]));
 
-                if (!Template.Any(c => c.Key == (splitInput[0][0], splitInput[1][0])))
-                {
-                    Template.Add((splitInput[0][0], splitInput[1][0]), 0);
-                    template.Add((splitInput[0][0], splitInput[1][0]), 0);
-                }
-                if (!Template.Any(c => c.Key == (splitInput[1][0], splitInput[0][1])))
-                {
-                    Template.Add((splitInput[1][0], splitInput[0][1]), 0);
-                    template.Add((splitInput[1][0], splitInput[0][1]), 0);
-                }
+                if (!polymer.Any(c => c.Key == (splitInput[0][0], splitInput[1][0])))
+                    polymer.Add((splitInput[0][0], splitInput[1][0]), 0);
+
+                if (!polymer.Any(c => c.Key == (splitInput[1][0], splitInput[0][1])))
+                    polymer.Add((splitInput[1][0], splitInput[0][1]), 0);
             }
+
+            Template = new(polymer);
+            Template.Keys.ToList().ForEach(d => Template[d] = 0);
 
             for (int i = 0; i < 40; i++)
             {
                 Console.WriteLine(i);
-                template = template.AddLetters(map);
+                polymer = polymer.AddLetters(map);
             }
-            template.Add((lastChar, ' '), 1);
-            var occurence = template
+
+            polymer.Add((lastChar, ' '), 1);
+            var occurence = polymer
                 .GroupBy(x => x.Key.Item1)
+                .Select(x => x.Select(y => y.Value).Aggregate((a, b) => a + b))
                 .ToList();
 
-            List<long> occs = new();
-            foreach(var occ in occurence)
-            {
-                long oc = 0;
-                for(int j = 0; j < occ.Count(); j++)
-                    oc += occ.ElementAt(j).Value;
-                occs.Add(oc);
-                Console.WriteLine($"{occ.Key} {oc}");
-            }
-            occs.Sort();
-            Console.WriteLine(occs.Last() - occs.First());
+            occurence.Sort();
+            Console.WriteLine(occurence.Last() - occurence.First());
         }
 
-        private static string AddLetters(this string template, Dictionary<(char, char), string> map)
+        private static string AddLetters(this string polymer, Dictionary<(char, char), string> map)
         {
             string newTemplate = "";
-            for (int i = 0; i < template.Length - 1; i++)
+            for (int i = 0; i < polymer.Length - 1; i++)
             {
-                newTemplate += template[i];
-                newTemplate += map[(template[i], template[i + 1])];
+                newTemplate += polymer[i];
+                newTemplate += map[(polymer[i], polymer[i + 1])];
             }
-            newTemplate += template.Last();
+            newTemplate += polymer.Last();
             return newTemplate;
         }
 
-        private static Dictionary<(char, char), long> AddLetters(this Dictionary<(char, char), long> template, Dictionary<(char, char), (char, char, char)> map)
+        private static Dictionary<(char, char), long> AddLetters(this Dictionary<(char, char), long> polymer, Dictionary<(char, char), (char, char, char)> map)
         {
-            Dictionary <(char, char), long> newTemplate = new Dictionary<(char, char), long>(Template);
+            Dictionary <(char, char), long> newPolymer = new(Template);
 
-            foreach (var c in template.Where(x => x.Value > 0))
+            foreach (var c in polymer.Where(x => x.Value > 0))
             {
                 var x = map[c.Key];
-                newTemplate[(x.Item1, x.Item2)] += c.Value;
-                newTemplate[(x.Item2, x.Item3)] += c.Value;
+                newPolymer[(x.Item1, x.Item2)] += c.Value;
+                newPolymer[(x.Item2, x.Item3)] += c.Value;
             }
 
-            return newTemplate;
+            return newPolymer;
         }
     }
 }
