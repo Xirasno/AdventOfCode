@@ -7,10 +7,10 @@ namespace AdventOfCode
 {
     public static class Day15
     {
-        // x, y, cost, distance, prev
-        private static Dictionary<(int, int), (long, long, (int, int))> Grid = new();
-        private static Dictionary<(int, int), (long, long, (int, int))> Unvisited;
-        private static Dictionary<(int, int), (long, long, (int, int))> Visited = new();
+        // x, y, cost, distance
+        private static Dictionary<(int, int), (long, long)> Grid = new();
+        private static Dictionary<(int, int), (long, long)> Unvisited;
+        private static Dictionary<(int, int), (long, long)> Visited = new();
         public static void Part1()
         {
             string input;
@@ -23,17 +23,17 @@ namespace AdventOfCode
                 for (int j = 0; j < grid[i].Count; j++)
                 {
                     if(i == 0 && j == 0)
-                        Grid.Add((i, j), (0, 0, (0, 0)));
+                        Grid.Add((i, j), (0, 0));
                     else 
-                    Grid.Add((i, j), (grid[i][j], int.MaxValue, (-1, -1)));
+                    Grid.Add((i, j), (grid[i][j], int.MaxValue));
                 }
 
-            Unvisited = new Dictionary<(int, int), (long, long, (int, int))>(Grid);
+            Unvisited = new Dictionary<(int, int), (long, long)>(Grid);
 
             long cost = 0;
             while (Unvisited.Count > 0)
             {
-                KeyValuePair<(int, int), (long, long, (int, int))> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
+                KeyValuePair<(int, int), (long, long)> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
 
                 (int, int)[] positions = new[] { (curNode.Key.Item1 - 1, curNode.Key.Item2), 
                     (curNode.Key.Item1, curNode.Key.Item2 - 1), 
@@ -44,14 +44,14 @@ namespace AdventOfCode
                 {
                     if (positions[i].Item1 < 0 || positions[i].Item2 < 0 || positions[i].Item1 >= grid.Count || positions[i].Item2 >= grid.Last().Count)
                         continue;
-                    (long, long, (int, int)) nextNode = Grid[positions[i]];
+                    (long, long) nextNode = Grid[positions[i]];
                     if (!Visited.Values.Any(n => n.Item1 == nextNode.Item1 && n.Item2 == nextNode.Item2))
                     {
                         cost = curNode.Value.Item2 + nextNode.Item1;
                         if (cost <= nextNode.Item2)
                         {
-                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
-                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost);
+                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost);
                         }
                     }
                 }
@@ -86,17 +86,17 @@ namespace AdventOfCode
                 for (int j = 0; j < largeGrid.GetLength(1); j++)
                 {
                     if (i == 0 && j == 0)
-                        Grid.Add((i, j), (0, 0, (0, 0)));
+                        Grid.Add((i, j), (0, 0));
                     else
-                        Grid.Add((i, j), (largeGrid[i,j], int.MaxValue, (-1, -1)));
+                        Grid.Add((i, j), (largeGrid[i,j], int.MaxValue));
                 }
 
-            Unvisited = new Dictionary<(int, int), (long, long, (int, int))>(Grid);
+            Unvisited = new Dictionary<(int, int), (long, long)>(Grid);
 
             long cost = 0;
             while (Unvisited.Count > 0)
             {
-                KeyValuePair<(int, int), (long, long, (int, int))> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
+                KeyValuePair<(int, int), (long, long)> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
 
                 (int, int)[] positions = new[] { (curNode.Key.Item1 - 1, curNode.Key.Item2),
                     (curNode.Key.Item1, curNode.Key.Item2 - 1),
@@ -107,14 +107,14 @@ namespace AdventOfCode
                 {
                     if (positions[i].Item1 < 0 || positions[i].Item2 < 0 || positions[i].Item1 >= largeGrid.GetLength(0) || positions[i].Item2 >= largeGrid.GetLength(1))
                         continue;
-                    (long, long, (int, int)) nextNode = Grid[positions[i]];
+                    (long, long) nextNode = Grid[positions[i]];
                     if (!Visited.Values.Any(n => n.Item1 == nextNode.Item1 && n.Item2 == nextNode.Item2))
                     {
                         cost = curNode.Value.Item2 + nextNode.Item1;
                         if (cost <= nextNode.Item2)
                         {
-                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
-                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost);
+                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost);
                         }
                     }
                 }
