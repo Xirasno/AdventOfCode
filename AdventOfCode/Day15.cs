@@ -7,9 +7,10 @@ namespace AdventOfCode
 {
     public static class Day15
     {
-        private static List<Node> Grid = new();
-        private static List<Node> Unvisited;
-        private static List<Node> Close = new();
+        // x, y, cost, distance, prev
+        private static Dictionary<(int, int), (long, long, (int, int))> Grid = new();
+        private static Dictionary<(int, int), (long, long, (int, int))> Unvisited;
+        private static Dictionary<(int, int), (long, long, (int, int))> Visited = new();
         public static void Part1()
         {
             string input;
@@ -22,77 +23,106 @@ namespace AdventOfCode
                 for (int j = 0; j < grid[i].Count; j++)
                 {
                     if(i == 0 && j == 0)
-                        Grid.Add(new Node(i, j, 0));
+                        Grid.Add((i, j), (0, 0, (0, 0)));
                     else 
-                    Grid.Add(new Node(i, j, grid[i][j]));
+                    Grid.Add((i, j), (grid[i][j], int.MaxValue, (-1, -1)));
                 }
 
-            Unvisited = new List<Node>(Grid);
-            Unvisited.Sort(new NodeComparer());
+            Unvisited = new Dictionary<(int, int), (long, long, (int, int))>(Grid);
 
-            bool finished = false;
-            while (Unvisited.Count > 0 && !finished)
+            long cost = 0;
+            while (Unvisited.Count > 0)
             {
-                Node curNode =
-            }
-            
-            //var h = FindPath((0, 0), path);
-            Console.WriteLine(risk);
-        }
+                KeyValuePair<(int, int), (long, long, (int, int))> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
 
-        /*public static void Part2()
-        {
+                (int, int)[] positions = new[] { (curNode.Key.Item1 - 1, curNode.Key.Item2), 
+                    (curNode.Key.Item1, curNode.Key.Item2 - 1), 
+                    (curNode.Key.Item1 + 1, curNode.Key.Item2), 
+                    (curNode.Key.Item1, curNode.Key.Item2 + 1) };
 
-        }*/
-
-        private static int FindPath((int, int) curPos, Stack<(int, int)> curPath)
-        {
-
-        }
-
-        /*private static int FindPath((int, int) curPos, Stack<(int, int)> curPath)
-        {
-            int paths = 0;
-            curPath.Push(curPos);
-
-            (int, int)[] positions = new[] { (curPos.Item1 - 1, curPos.Item2), (curPos.Item1, curPos.Item2 - 1), (curPos.Item1 + 1, curPos.Item2), (curPos.Item1, curPos.Item2 + 1) };
-            for (int i = 0; i < positions.Length; i++)
-            {
-                if (curPath.Contains(positions[i]))
-                    continue;
-                if (positions[i] == (grid.Count, grid[0].Count))
+                for (int i = 0; i < positions.Length; i++)
                 {
-                    paths++;
-                    continue;
+                    if (positions[i].Item1 < 0 || positions[i].Item2 < 0 || positions[i].Item1 >= grid.Count || positions[i].Item2 >= grid.Last().Count)
+                        continue;
+                    (long, long, (int, int)) nextNode = Grid[positions[i]];
+                    if (!Visited.Values.Any(n => n.Item1 == nextNode.Item1 && n.Item2 == nextNode.Item2))
+                    {
+                        cost = curNode.Value.Item2 + nextNode.Item1;
+                        if (cost <= nextNode.Item2)
+                        {
+                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                        }
+                    }
                 }
-                paths += FindPath(grid, positions[i], curPath);
+                Visited.Add(curNode.Key, curNode.Value);
+                Unvisited.Remove(curNode.Key);
             }
 
-            curPath.Pop();
-            return paths;
-        }*/
-
-
-    }
-    
-    public class Node
-    {
-        public int x, y, cost, distance = int.MaxValue;
-        public Node previous = null;
-        public bool visited = false;
-        public Node(int x, int y, int cost)
-        {
-            this.x = x;
-            this.y = y;
-            this.cost = cost;
+            Console.WriteLine(Visited[(grid.Count - 1, grid[0].Count - 1)].Item2);
         }
-    }
 
-    class NodeComparer : IComparer<Node>
-    {
-        public int Compare(Node n1, Node n2)
+        public static void Part2()
         {
-            return n1.cost.CompareTo(n2.cost);
+            string input;
+            List<List<int>> grid = new();
+            while ((input = Console.ReadLine()) != "")
+            {
+                grid.Add(new List<int>(input.ToList().Select(c => int.Parse(c.ToString()))));
+            }
+            int[,] largeGrid = new int[grid.Count * 5, grid[0].Count * 5];
+            for (int x = 0; x < 5; x++)
+                for (int y = 0; y < 5; y++)
+                    for (int i = 0; i < grid.Count; i++)
+                        for (int j = 0; j < grid[i].Count; j++)
+                        {
+                            if (x == 0 && y == 0)
+                                largeGrid[i, j] = grid[i][j];
+                            else
+                                largeGrid[i + (x * grid.Count), j + (y * grid[0].Count)] = grid[i][j] + x + y > 9 ? grid[i][j] + x + y - 9 : grid[i][j] + x + y;
+                        }
+
+            for (int i = 0; i < largeGrid.GetLength(0); i++)
+                for (int j = 0; j < largeGrid.GetLength(1); j++)
+                {
+                    if (i == 0 && j == 0)
+                        Grid.Add((i, j), (0, 0, (0, 0)));
+                    else
+                        Grid.Add((i, j), (largeGrid[i,j], int.MaxValue, (-1, -1)));
+                }
+
+            Unvisited = new Dictionary<(int, int), (long, long, (int, int))>(Grid);
+
+            long cost = 0;
+            while (Unvisited.Count > 0)
+            {
+                KeyValuePair<(int, int), (long, long, (int, int))> curNode = Unvisited.OrderBy(n => n.Value.Item2).First();
+
+                (int, int)[] positions = new[] { (curNode.Key.Item1 - 1, curNode.Key.Item2),
+                    (curNode.Key.Item1, curNode.Key.Item2 - 1),
+                    (curNode.Key.Item1 + 1, curNode.Key.Item2),
+                    (curNode.Key.Item1, curNode.Key.Item2 + 1) };
+
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    if (positions[i].Item1 < 0 || positions[i].Item2 < 0 || positions[i].Item1 >= largeGrid.GetLength(0) || positions[i].Item2 >= largeGrid.GetLength(1))
+                        continue;
+                    (long, long, (int, int)) nextNode = Grid[positions[i]];
+                    if (!Visited.Values.Any(n => n.Item1 == nextNode.Item1 && n.Item2 == nextNode.Item2))
+                    {
+                        cost = curNode.Value.Item2 + nextNode.Item1;
+                        if (cost <= nextNode.Item2)
+                        {
+                            Unvisited[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                            Grid[positions[i]] = (Unvisited[positions[i]].Item1, cost, curNode.Key);
+                        }
+                    }
+                }
+                Visited.Add(curNode.Key, curNode.Value);
+                Unvisited.Remove(curNode.Key);
+            }
+
+            Console.WriteLine(Visited[(largeGrid.GetLength(0) - 1, largeGrid.GetLength(1) - 1)].Item2);
         }
     }
 }
