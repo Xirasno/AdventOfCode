@@ -34,7 +34,7 @@ namespace AdventOfCode
             }
 
 
-            Console.WriteLine(versions.Aggregate((a, b) => a + b));
+            vConsole.WriteLine(versions.Aggregate((a, b) => a + b));
         }
 
         /*public static void Part2()
