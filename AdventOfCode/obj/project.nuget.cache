@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "YuLLPpBqmYPNNzq2MpZE5g5FXyp6KuFzaKEw52yP16vYzZv42PWmvKi9EaAPCCTAWOC+8cw8d4Y/Ct9Qy6KKsA==",
+  "dgSpecHash": "gRYISAam/Pl+wfDt8M02DdoEt9JdrU3I7RbfwFhe7oiM5xO7n72ZTEbyqTcFTlQK1huXCbfrUtGUvo1fRz6p0g==",
   "success": true,
-  "projectFilePath": "E:\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ROB6035\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.12\\microsoft.netcore.app.host.win-x64.5.0.12.nupkg.sha512",
+    "C:\\Users\\ROB6035\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\ROB6035\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\ROB6035\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

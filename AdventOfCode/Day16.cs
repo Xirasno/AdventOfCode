@@ -38,6 +38,7 @@ namespace AdventOfCode
             List<string> packets = new() { bitOutput };
             while (packets.Any() && !packets.All(p => p.StartsWith("LIT")))
             {
+                packets.Sort();
                 var curPacket = packets.First();
                 if (curPacket.StartsWith("LIT"))
                     continue;
@@ -72,7 +73,7 @@ namespace AdventOfCode
                 }
                 packets.Add(packet);
             }
-            else if (type == 6)
+            else
             {
                 char indicator = bits[6];
                 if (indicator == '0')
@@ -82,55 +83,57 @@ namespace AdventOfCode
                 }
                 else if (indicator == '1')
                 {
-                    int nr = Convert.ToInt32(bits.Substring(7, 11), 2);
-                    for (int i = 0; i < nr; i++)
-                    {
-                    }
+                    int count = Convert.ToInt32(bits.Substring(7, 11), 2);
+                    packets = packets.Concat(GetSubPackets(bits[18..], count)).ToList();
                 }
 
             }                
 
             return packets;
         }
-
-        private static List<string> GetSubPackets(string bits)
+        private static List<string> GetSubPackets(string bits, int count = int.MaxValue)
         {
             List<string> packets = new();
-            for (int i = 0; i < bits.Length; i++)
+            for (int n = 0; n < count; n++)
             {
                 var packet = "";
                 int type = 0;
-                try { type = Convert.ToInt32(bits.Substring(i + 3, 3), 2); }
+                try { type = Convert.ToInt32(bits.Substring(3, 3), 2); }
                 catch { break; }
                 if (type == 4)
                 {
                     packet += bits[..6];
-                    for (int k = i + 6; k < bits.Length; k += 5)
+                    for (int k = 6; k < bits.Length; k += 5)
                     {
                         packet += bits.Substring(k, 5);
                         if (bits[k] == '0')
                             break;
                     }
                     packets.Add(packet);
-                    i += packet.Length;
+                    bits = bits.Replace(packet, "");
                 }
 
-                else if (type == 6)
+                else
                 {
-                    char indicator = bits[i + 6];
+                    char indicator = bits[6];
                     if (indicator == '0')
                     {
-                        int lenght = Convert.ToInt32(bits.Substring(i + 7, 15), 2);
-                        var subPackets = GetSubPackets(bits.Substring(i + 22, lenght));
-                        packets = packets.Concat(subPackets).ToList();
-                        i += subPackets.Aggregate((a, b) => a + b).Length;
+                        var lengthBit = bits.Substring(7, 15);
+                        var l = bits.Length;
+                        int lenght = Convert.ToInt32(bits.Substring(7, 15), 2);
+                        var subPackets = bits[..22] + bits.Substring(22, lenght);
+                        packets.Add(subPackets);
+                        bits = bits.Replace(subPackets, "");
                     }
                     else if (indicator == '1')
                     {
-                        int nr = Convert.ToInt32(bits.Substring(i + 7, 11), 2);
-                        for (int k = 0; k < nr; k++)
-                        {
-                        }
+                        int count2 = Convert.ToInt32(bits.Substring(7, 11), 2);
+                        var subPackets = GetSubPackets(bits[18..], count2);
+                        packet = bits[..18];
+                        packets.Add(packet + subPackets.Aggregate((a, b) => a + b));
+                        bits = bits.Replace(packet, "");
+                        foreach(var pack in subPackets)
+                            bits = bits.Replace(pack, "");
                     }
                 }
             }
