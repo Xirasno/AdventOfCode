@@ -7,24 +7,10 @@ namespace AdventOfCode
 {
     public static class Day16
     {
-        private static Dictionary<char, string> Map = new Dictionary<char, string>()
+        private static Dictionary<char, string> Map = new()
         {
-            {'0', "0000"},
-            {'1', "0001"},
-            {'2', "0010"},
-            {'3', "0011"},
-            {'4', "0100"},
-            {'5', "0101"},
-            {'6', "0110"},
-            {'7', "0111"},
-            {'8', "1000"},
-            {'9', "1001"},
-            {'A', "1010"},
-            {'B', "1011"},
-            {'C', "1100"},
-            {'D', "1101"},
-            {'E', "1110"},
-            {'F', "1111"},
+            {'0', "0000"}, {'1', "0001"}, {'2', "0010"}, {'3', "0011"}, {'4', "0100"}, {'5', "0101"}, {'6', "0110"}, {'7', "0111"}, 
+            {'8', "1000"}, {'9', "1001"}, {'A', "1010"}, {'B', "1011"}, {'C', "1100"}, {'D', "1101"}, {'E', "1110"}, {'F', "1111"},
         };
 
         public static void Part1()
@@ -120,8 +106,10 @@ namespace AdventOfCode
                     {
                         var lengthBit = bits.Substring(7, 15);
                         var l = bits.Length;
-                        int lenght = Convert.ToInt32(bits.Substring(7, 15), 2);
-                        var subPackets = bits[..22] + bits.Substring(22, lenght);
+                        int length = Convert.ToInt32(bits.Substring(7, 15), 2);
+                        string subPackets = "";
+                        try { subPackets = bits[..22] + bits.Substring(22, length); }
+                        catch { break; }
                         packets.Add(subPackets);
                         bits = bits.Replace(subPackets, "");
                     }
@@ -130,7 +118,8 @@ namespace AdventOfCode
                         int count2 = Convert.ToInt32(bits.Substring(7, 11), 2);
                         var subPackets = GetSubPackets(bits[18..], count2);
                         packet = bits[..18];
-                        packets.Add(packet + subPackets.Aggregate((a, b) => a + b));
+                        try { packets.Add(packet + subPackets.Aggregate((a, b) => a + b)); }
+                        catch { break; }
                         bits = bits.Replace(packet, "");
                         foreach(var pack in subPackets)
                             bits = bits.Replace(pack, "");
