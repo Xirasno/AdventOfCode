@@ -37,10 +37,69 @@ namespace AdventOfCode
             Console.WriteLine(versions.Aggregate((a, b) => a + b));
         }
 
-        /*public static void Part2()
+        public static void Part2()
         {
+            string packet = Console.ReadLine();
+            string bitOutput = "";
+            for (int i = 0; i < packet.Length; i++)
+                bitOutput += Map[packet[i]];
 
-        }*/
+            long value = Unpack2(bitOutput);
+
+
+            Console.WriteLine(value);
+        }
+
+        private static long Unpack2(string bits)
+        {
+            List<string> packets = new();
+            string packet = "";
+            int type = Convert.ToInt32(bits.Substring(3, 3), 2);
+
+            if (type == 4)
+            {
+                for (int i = 6; i < bits.Length; i += 5)
+                {
+                    packet += bits.Substring(i + 1, 4);
+                    if (bits[i] == '0')
+                        break;
+                }
+                return Convert.ToInt64(packet, 2);
+            }
+
+            char indicator = bits[6];
+            if (indicator == '0')
+            {
+                int length = Convert.ToInt32(bits.Substring(7, 15), 2);
+                packets = packets.Concat(GetSubPackets(bits.Substring(22, length))).ToList();
+            }
+            else if (indicator == '1')
+            {
+                int count = Convert.ToInt32(bits.Substring(7, 11), 2);
+                packets = packets.Concat(GetSubPackets(bits[18..], count)).ToList();
+            }
+
+            switch (type)
+            {
+                case 0:
+                    return packets.Select(p => Unpack2(p)).Aggregate((a, b) => a + b);
+                case 1:
+                    return packets.Select(p => Unpack2(p)).Aggregate((a, b) => a * b);
+                case 2:
+                    return packets.Select(p => Unpack2(p)).Min();
+                case 3:
+                    return packets.Select(p => Unpack2(p)).Max();
+                case 5:
+                    return Unpack2(packets[0]) > Unpack2(packets[1]) ? 1 : 0;
+                case 6:
+                    return Unpack2(packets[0]) < Unpack2(packets[1]) ? 1 : 0;
+                case 7:
+                    return Unpack2(packets[0]) == Unpack2(packets[1]) ? 1 : 0;
+                default: break;
+            }
+
+            return 0;
+        }
 
         private static List<string> Unpack(string bits)
         {
