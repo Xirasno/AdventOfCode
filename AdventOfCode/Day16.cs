@@ -34,7 +34,7 @@ namespace AdventOfCode
             }
 
 
-            vConsole.WriteLine(versions.Aggregate((a, b) => a + b));
+            Console.WriteLine(versions.Aggregate((a, b) => a + b));
         }
 
         /*public static void Part2()
@@ -64,8 +64,8 @@ namespace AdventOfCode
                 char indicator = bits[6];
                 if (indicator == '0')
                 {
-                    int lenght = Convert.ToInt32(bits.Substring(7, 15), 2);
-                    packets = packets.Concat(GetSubPackets(bits.Substring(22, lenght))).ToList();
+                    int length = Convert.ToInt32(bits.Substring(7, 15), 2);
+                    packets = packets.Concat(GetSubPackets(bits.Substring(22, length))).ToList();
                 }
                 else if (indicator == '1')
                 {
@@ -84,8 +84,7 @@ namespace AdventOfCode
             {
                 var packet = "";
                 int type = 0;
-                try { type = Convert.ToInt32(bits.Substring(3, 3), 2); }
-                catch { break; }
+                try { type = Convert.ToInt32(bits.Substring(3, 3), 2); } catch { break; }
                 if (type == 4)
                 {
                     packet += bits[..6];
@@ -96,7 +95,7 @@ namespace AdventOfCode
                             break;
                     }
                     packets.Add(packet);
-                    bits = bits.Replace(packet, "");
+                    bits = bits.Remove(0 ,packet.Length);
                 }
 
                 else
@@ -104,25 +103,22 @@ namespace AdventOfCode
                     char indicator = bits[6];
                     if (indicator == '0')
                     {
-                        var lengthBit = bits.Substring(7, 15);
-                        var l = bits.Length;
-                        int length = Convert.ToInt32(bits.Substring(7, 15), 2);
+                        int length = 0;
+                        length = Convert.ToInt32(bits.Substring(7, 15), 2);
                         string subPackets = "";
-                        try { subPackets = bits[..22] + bits.Substring(22, length); }
-                        catch { break; }
+                        subPackets = bits[..22] + bits.Substring(22, length);
                         packets.Add(subPackets);
                         bits = bits.Replace(subPackets, "");
                     }
                     else if (indicator == '1')
                     {
-                        int count2 = Convert.ToInt32(bits.Substring(7, 11), 2);
+                        int count2 = 0;
+                        count2 = Convert.ToInt32(bits.Substring(7, 11), 2);
                         var subPackets = GetSubPackets(bits[18..], count2);
                         packet = bits[..18];
-                        try { packets.Add(packet + subPackets.Aggregate((a, b) => a + b)); }
-                        catch { break; }
-                        bits = bits.Replace(packet, "");
-                        foreach(var pack in subPackets)
-                            bits = bits.Replace(pack, "");
+                        packet += subPackets.Count > 0 ? subPackets.Aggregate((a, b) => a + b) : "";
+                        packets.Add(packet);
+                        bits = bits.Remove(0, packet.Length);
                     }
                 }
             }
