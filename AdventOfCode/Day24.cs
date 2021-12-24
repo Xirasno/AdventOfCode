@@ -19,7 +19,7 @@ namespace AdventOfCode
             }
             
             string[] splitInput;
-            int[] modelNr = new int[14] { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
+            int[] modelNr = new int[14] { 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
             long highest = 0;
             for (long m = 49999999999999, i = 0; m >= 25999999999999; m--, i = 0, modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray())
             {
