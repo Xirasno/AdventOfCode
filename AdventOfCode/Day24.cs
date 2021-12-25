@@ -19,10 +19,12 @@ namespace AdventOfCode
             }
             
             string[] splitInput;
-            int[] modelNr = new int[14] { 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
-            long highest = 0;
-            for (long m = 49999999999999, i = 0; m >= 25999999999999; m--, i = 0, modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray())
+            long m = 39999157800000;
+            int[] modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray();
+            for (int i = 0; m >= 25999999999999; m--, i = 0, modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray())
             {
+                if (m % 100000 == 0)
+                    Console.WriteLine(m);
                 if (modelNr.Any(n => n == 0))
                     continue;
 
@@ -75,8 +77,6 @@ namespace AdventOfCode
                 Variables["y"] = 0;
                 Variables["z"] = 0;
             }
-
-            Console.WriteLine(highest);
         }
 
         /*public static void Part2()
