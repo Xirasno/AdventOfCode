@@ -19,7 +19,7 @@ namespace AdventOfCode
             }
             
             string[] splitInput;
-            long m = 39999157800000;
+            long m = 49917929934999;
             int[] modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray();
             for (int i = 0; m >= 25999999999999; m--, i = 0, modelNr = m.ToString().Select(c => int.Parse(c.ToString())).ToArray())
             {
@@ -67,6 +67,7 @@ namespace AdventOfCode
 
                     }
                 }
+                Console.WriteLine(Variables["z"]);
                 if(Variables["z"] == 0)
                 {
                     Console.WriteLine(m);

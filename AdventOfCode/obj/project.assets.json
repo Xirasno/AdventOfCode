@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\broek\\.nuget\\packages\\": {}
+    "C:\\Users\\ROB6035\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Code\\Repos\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+      "projectUniqueName": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
       "projectName": "AdventOfCode",
-      "projectPath": "C:\\Code\\Repos\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
-      "packagesPath": "C:\\Users\\broek\\.nuget\\packages\\",
-      "outputPath": "C:\\Code\\Repos\\AdventOfCode2021\\AdventOfCode\\obj\\",
+      "projectPath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\AdventOfCode.csproj",
+      "packagesPath": "C:\\Users\\ROB6035\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ROB6035\\OneDrive - Robeco Nederland B.V\\Documents\\Advent of Code\\AdventOfCode2021\\AdventOfCode\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\broek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ROB6035\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,7 +28,9 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://robeco.pkgs.visualstudio.com/71120899-9ab9-46a8-a66e-271b6b77ccf0/_packaging/PSFeed/nuget/v3/index.json": {},
+        "https://robeco.pkgs.visualstudio.com/_packaging/CSSTestFeed%40Local/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
