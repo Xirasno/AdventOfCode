@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day11
+    public static class AoC2021Day11
     {
         private static int Flashes = 0;
         private static HashSet<(int, int)> HasFlashed = new();

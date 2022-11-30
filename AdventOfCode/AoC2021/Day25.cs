@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day25
+    public static class AoC2021Day25
     {
         public static int MaxX, MaxY;
         public static void Part1()

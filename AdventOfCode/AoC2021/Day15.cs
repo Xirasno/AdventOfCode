@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day15
+    public static class AoC2021Day15
     {
         // x, y, cost, distance
         private static Dictionary<(int, int), (long, long)> Grid = new();

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day14
+    public static class AoC2021Day14
     {
         private static Dictionary<(char, char), long> Template;
         public static void Part1()

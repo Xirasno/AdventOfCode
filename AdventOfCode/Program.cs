@@ -10,11 +10,11 @@ namespace AdventOfCode
         {
             var assembly = Assembly.LoadFrom("./AdventOfCode.dll");
             TypeInfo type = assembly.DefinedTypes
-                .Where(t => t.Name.StartsWith("Day"))
-                .OrderByDescending(t => t.Name.Remove(0, 3))
+                .Where(t => t.Name.ToUpper().StartsWith("AOC"))
+                .OrderByDescending(t => t.Name)
                 .FirstOrDefault();
             type.DeclaredMethods
-                .Where(t => t.Name.StartsWith("Part"))
+                .Where(t => t.Name.ToUpper().StartsWith("PART"))
                 .OrderByDescending(m => m.Name.Last())
                 .FirstOrDefault()
                 .Invoke(null, null);
@@ -31,7 +31,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class DayX
+    public static class AoC2022DayX
     {
         public static void Part1()
         {

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class Day10
+    public static class AoC2021Day10
     {
         private static Dictionary<char, char> Braces = new() { {')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' } };
         private static Dictionary<char, int> CorruptScore = new() { {')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };

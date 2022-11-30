@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AdventOfCode
 {
-    public static class Day01
+    public static class AoC2021Day01
     {
         public static void Part1()
         {
