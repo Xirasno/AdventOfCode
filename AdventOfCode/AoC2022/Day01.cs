@@ -38,5 +38,23 @@ namespace AdventOfCode
             i = 0;
             return old;
         }
+
+        /* The version where I don't have to end with a "."
+        public static List<int> calcCalories()
+        {
+            List<int> calories = new();
+            string input = Console.ReadLine();
+            int calorie = 0;
+            do
+            {
+                do
+                    calorie += Convert.ToInt32(input);
+                while ((input = Console.ReadLine()) != "");
+                calories.Add(calorie.Reset());
+            }
+            while ((input = Console.ReadLine()) != "");
+            return calories;
+        }
+         */
     }
 }
