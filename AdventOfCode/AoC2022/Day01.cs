@@ -32,6 +32,7 @@ namespace AdventOfCode
             return calories;
         }
 
+        // For future reference, no this is not code that I would normally write, it just felt funny to do it like this
         public static int Reset(this ref int i)
         {
             var old = i;
