@@ -9,15 +9,15 @@ namespace AdventOfCode
     {
         public static void Part1()
         {
-            Console.WriteLine(calcCalories().Max());
+            Console.WriteLine(CalcCalories().Max());
         }
 
         public static void Part2()
         {
-            Console.WriteLine(calcCalories().OrderByDescending(n => n).Take(3).Sum());
+            Console.WriteLine(CalcCalories().OrderByDescending(n => n).Take(3).Sum());
         }
 
-        public static List<int> calcCalories()
+        public static List<int> CalcCalories()
         {
             List<int> calories = new();
             string input;
