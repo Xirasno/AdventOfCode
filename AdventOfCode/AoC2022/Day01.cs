@@ -9,41 +9,34 @@ namespace AdventOfCode
     {
         public static void Part1()
         {
-            List<int> calories = new();
-            string input = Console.ReadLine();
-            int calorie = 0;
-            do
-            {
-                do
-                    calorie += Convert.ToInt32(input);
-                while ((input = Console.ReadLine()) != "");
-
-                calories.Add(calorie);
-                calorie = 0;
-
-            }
-            while ((input = Console.ReadLine()) != "");
-            Console.WriteLine(calories.Max());
+            Console.WriteLine(calcCalories().Max());
         }
 
         public static void Part2()
         {
+            Console.WriteLine(calcCalories().OrderByDescending(n => n).Take(3).Sum());
+        }
+
+        public static List<int> calcCalories()
+        {
             List<int> calories = new();
-            string input = Console.ReadLine();
+            string input;
             int calorie = 0;
-            do
+            while ((input = Console.ReadLine()) != ".")
             {
-                do
+                if (input != "")
                     calorie += Convert.ToInt32(input);
-                while ((input = Console.ReadLine()) != "");
-
-                calories.Add(calorie);
-                calorie = 0;
-
+                else
+                    calories.Add(calorie.Reset());
             }
-            while ((input = Console.ReadLine()) != "");
-            var newCalories = calories.OrderByDescending(n => n).ToArray();
-            Console.WriteLine(newCalories[0]+ newCalories[1]+ newCalories[2]);
+            return calories;
+        }
+
+        public static int Reset(this ref int i)
+        {
+            var old = i;
+            i = 0;
+            return old;
         }
     }
 }
