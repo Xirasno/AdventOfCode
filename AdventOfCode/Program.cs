@@ -35,7 +35,8 @@ namespace AdventOfCode
     {
         public static void Part1()
         {
-
+            string input;
+            Console.WriteLine();
         }
 
         /*public static void Part2()
