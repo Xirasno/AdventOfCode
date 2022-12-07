@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode
 {
-    public static class AoC2022Day5
+    public static class AoC2022Day05
     {
         private readonly static string[] stacks = new string[9] {
                 "NSDCVQT",
