@@ -35,9 +35,10 @@ namespace AdventOfCode
                 Console.ReadLine();
             }
 
+            var moduloProd = Monkeys.Select(m => m.test).Aggregate((m1, m2) => m1 * m2);
             for (int i = 0; i < 20; i++)
                 for (int j = 0; j < Monkeys.Count; j++)
-                    Monkeys[j].InspectItems(Monkeys, false);
+                    Monkeys[j].InspectItems(Monkeys, moduloProd, false);
 
             var action = Monkeys.Select(m => m.action).OrderByDescending(a => a).ToList();
             Console.WriteLine(action[0] * action[1]);
@@ -70,11 +71,11 @@ namespace AdventOfCode
                 Console.ReadLine();
             }
 
-            var moduloSum = Monkeys.Select(m => m.test).Aggregate((m1, m2) => m1 * m2);
+            var moduloProd = Monkeys.Select(m => m.test).Aggregate((m1, m2) => m1 * m2);
             for (int i = 0; i < 10_000; i++)
             {
                 for (int j = 0; j < Monkeys.Count; j++)
-                    Monkeys[j].InspectItems(Monkeys, true);
+                    Monkeys[j].InspectItems(Monkeys, moduloProd, true);
             }
 
             var action = Monkeys.Select(m => m.action).OrderByDescending(a => a).ToList();
@@ -100,7 +101,7 @@ namespace AdventOfCode
             this.action = 0;
         }
 
-        public void InspectItems(List<Monkey> monkeys, bool part2)
+        public void InspectItems(List<Monkey> monkeys, long moduloProd, bool part2)
         {
             for (int i = 0; i < items.Count; i++)
             {
@@ -109,7 +110,7 @@ namespace AdventOfCode
                 var newItem = Operation(items[i]);
                 if (!part2)
                     newItem /= 3;
-                Test(monkeys, newItem);
+                Test(monkeys, newItem, moduloProd);
             }
             Cleanup();
         }
@@ -123,12 +124,12 @@ namespace AdventOfCode
             toDelete.Clear();
         }
 
-        public void Test(List<Monkey> monkeys, long item)
+        public void Test(List<Monkey> monkeys, long item, long moduloProd)
         {
             if (item % test == 0)
-                monkeys[monkeyTrue].items.Add(item % 9699690); // TestInput: 96577
+                monkeys[monkeyTrue].items.Add(item % moduloProd);
             else
-                monkeys[monkeyFalse].items.Add(item % 9699690); // TestInput: 96577
+                monkeys[monkeyFalse].items.Add(item % moduloProd);
         }
 
         public long Operation(long item)
