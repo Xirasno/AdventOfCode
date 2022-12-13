@@ -10,19 +10,20 @@ namespace AdventOfCode
         public static void Part1()
         {
             string input;
-            int rightOrder = 0, index = 1;
+            List<int> rightOrder = new();
+            int index = 0;
             while ((input = Console.ReadLine()) != "")
             {
+                index++;
                 var left = ParsePacket(input);
                 var right = ParsePacket(Console.ReadLine());
 
                  if (ComparePackets(left, right) == 1)
-                    rightOrder += index;
+                    rightOrder.Add(index);
 
                 Console.ReadLine();
-                index++;
             }
-            Console.WriteLine(rightOrder);
+            Console.WriteLine(rightOrder.Sum());
         }
 
         /*public static void Part2()
@@ -65,18 +66,20 @@ namespace AdventOfCode
                 else return p;
             }
 
-            for (int i = 0; i < right.packets.Count; i++)
+            for (int i = 0; i < right.packets.Count && i < left.packets.Count; i++)
             {
-                if (i > left.packets.Count - 1)
-                    return 1;
-
                 var p = ComparePackets(left.packets[i], right.packets[i]);
                 if (p == 0)
                     continue;
                 return p;
             }
 
-            return 0;
+            if (left.packets.Count < right.packets.Count)
+                return 1;
+            if (left.packets.Count > right.packets.Count)
+                return -1;
+            else 
+                return 0;
         }
 
         public static Packet ParsePacket(string input)
