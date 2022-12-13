@@ -17,8 +17,7 @@ namespace AdventOfCode
                 index++;
                 var left = ParsePacket(input);
                 var right = ParsePacket(Console.ReadLine());
-
-                 if (ComparePackets(left, right) == 1)
+                if (ComparePackets(left, right) == 1)
                     rightOrder.Add(index);
 
                 Console.ReadLine();
@@ -44,6 +43,24 @@ namespace AdventOfCode
                 return -1;
             }
 
+            if (left.packets.Count > 0 && right.packets.Count > 0)
+            {
+                for (int i = 0; i < right.packets.Count && i < left.packets.Count; i++)
+                {
+                    var p = ComparePackets(left.packets[i], right.packets[i]);
+                    if (p == 0)
+                        continue;
+                    return p;
+                }
+
+                if (left.packets.Count < right.packets.Count)
+                    return 1;
+                if (left.packets.Count > right.packets.Count)
+                    return -1;
+                else
+                    return 0;
+            }
+
             if (left.packets.Count == 0 && right.packets.Count > 0)
             {
                 if (left.value == -1)
@@ -66,20 +83,7 @@ namespace AdventOfCode
                 else return p;
             }
 
-            for (int i = 0; i < right.packets.Count && i < left.packets.Count; i++)
-            {
-                var p = ComparePackets(left.packets[i], right.packets[i]);
-                if (p == 0)
-                    continue;
-                return p;
-            }
-
-            if (left.packets.Count < right.packets.Count)
-                return 1;
-            if (left.packets.Count > right.packets.Count)
-                return -1;
-            else 
-                return 0;
+            return 0;
         }
 
         public static Packet ParsePacket(string input)
