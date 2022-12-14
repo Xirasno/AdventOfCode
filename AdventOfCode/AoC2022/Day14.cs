@@ -10,7 +10,7 @@ namespace AdventOfCode
         public static void Part1()
         {
             string input;
-            List<(int, int)> grid = new();
+            HashSet<(int, int)> grid = new();
             while ((input = Console.ReadLine()) != "")
             {
                 var split = input.Split(" -> ");
@@ -78,7 +78,7 @@ namespace AdventOfCode
         public static void Part2()
         {
             string input;
-            List<(int, int)> grid = new();
+            HashSet<(int, int)> grid = new();
             while ((input = Console.ReadLine()) != "")
             {
                 var split = input.Split(" -> ");
