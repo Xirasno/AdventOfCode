@@ -41,8 +41,8 @@ namespace AdventOfCode
 
         public static void Part2()
         {
-            int minXY = 0;
-            int maxXY = 4000000;
+            int minXY = 0; //3687000
+            int maxXY = 4000000;// 4000000;
 
             string input;
             List<Sensor> sensors = new List<Sensor>();
@@ -61,49 +61,30 @@ namespace AdventOfCode
                 noBeacon.Add((xL, yL, dist));
             }
 
-            int k;
             bool inArea = false;
-            for (int j = maxXY; j >= minXY; j--)
+            for (int j = minXY; j <= maxXY; j++)
             {
-                Console.WriteLine("New j: " + j);
-                for (int i = maxXY; i >= minXY; i--)
+                for (int i = minXY; i <= maxXY;)
                 {
-                    k = 0;
                     foreach (var area in noBeacon)
                     {
-                        k++;
                         inArea = InArea((i, j), area);
                         if (inArea)
+                        {
+                            i = area.Item1;
+                            i += Math.Abs(area.Item3 - Math.Abs(area.Item2 - j)) + 1;
                             break;
+                        }
                     }
                     if (!inArea)
                     {
                         Console.WriteLine($"{i}, {j}");
-                        Console.WriteLine(i * 4000000 + j);
+                        Console.WriteLine((long)((long)i * (long)4000000 + (long)j));
+                        Console.ReadLine();
+                        return;
                     }
                 }
             }
-                /*
-                for (int i = maxXY; i >= minXY; i--)
-                {
-                    for (int j = maxXY; j >= minXY; j--)
-                    {
-                        k = 0;
-                        foreach (var area in noBeacon)
-                        {
-                            k++;
-                            inArea = InArea((i, j), area);
-                            if (inArea)
-                                break;
-                            else if (k == noBeacon.Count)
-                            {
-                                Console.WriteLine($"{i}, {j}");
-                                Console.WriteLine(i * 4000000 + j);
-                            }
-                        }
-                    }
-                }*/
-            
         }
 
         public static bool InArea((int, int) loc, (int, int, int) area)
