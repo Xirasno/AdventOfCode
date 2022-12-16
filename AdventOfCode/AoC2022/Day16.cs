@@ -40,7 +40,7 @@ namespace AdventOfCode
                 v.CalcDist(Valves);
 
             var curValve = Valves.First(v => v.Name == "AA");
-            int curPressure, bestPressure = 2059;// int.MinValue;
+            int curPressure, bestPressure = 2059 - 1;
             string path = "AA";
             string times = "30";
             Random rand = new();
@@ -94,7 +94,7 @@ namespace AdventOfCode
         public static void Part2()
         {
             string input;
-            int time = 27;
+            int time = 26;
             while ((input = Console.ReadLine()) != "")
             {
                 var split = input.Split(' ');
@@ -121,7 +121,7 @@ namespace AdventOfCode
                 v.CalcDist(Valves);
 
             Valve selfValve, elephantValve;
-            int curPressure, bestPressure = 0;
+            int curPressure, bestPressure = 2790 - 1;
             string pathS, timesS, pathE, timesE;
             List<string> pS = new() { "JJ", "BB", "CC" };
             List<string> pE = new() { "DD", "HH", "EE" };
@@ -130,65 +130,60 @@ namespace AdventOfCode
             while (true)
             {
                 pathS = "AA";
-                timesS = "26";
+                timesS = "1";
                 pathE = "AA";
-                timesE = "26";
+                timesE = "1";
                 selfValve = Valves.First(v => v.Name == "AA");
                 elephantValve = Valves.First(v => v.Name == "AA");
                 Valve option = selfValve, option2 = elephantValve;
                 List<Valve> unvisitedValves = Valves.Where(v => v.Name != "AA" && v.FlowRate > 0).ToList();
-                List<Valve> openedValves = new();
                 curPressure = 0;
-                int moveSelf = time, moveElephant = time;
-                for (int i = time; i > 0; i--)
+                int pressurePerMinute = 0;
+                int moveSelf = 1, moveElephant = 1;
+                for (int i = 1; i <= time; i++)
                 {
-                    if (moveSelf == i && unvisitedValves.Count > 0)
+                    curPressure += pressurePerMinute;
+                    if (moveSelf == i)
                     {
-                        if (!openedValves.Contains(selfValve))
+                        pressurePerMinute += selfValve.FlowRate;
+                        if (unvisitedValves.Count > 0)
                         {
-                            curPressure += moveSelf * selfValve.FlowRate;
-                            openedValves.Add(selfValve);
-                        }
-                        /*do
-                        {
-                            option = unvisitedValves[rand.Next(0, unvisitedValves.Count)];
-                        }
-                        while (option == option2);*/
-                        option = unvisitedValves.First(v => v.Name == pS.First());
-                        pS.RemoveAt(0);
+                            do
+                            {
+                                option = unvisitedValves[rand.Next(0, unvisitedValves.Count)];
+                            }
+                            while (option == option2);
 
-                        moveSelf = i - selfValve.Tunnels[option.Name] - 1;
-                        selfValve = option;
-                        unvisitedValves.Remove(option);
-                        pathS += " -> " + option.Name;
-                        timesS += " -> " + moveSelf;
+                            moveSelf = i + selfValve.Tunnels[option.Name] + 1;
+                            selfValve = option;
+                            unvisitedValves.Remove(option);
+                            pathS += " -> " + option.Name;
+                            timesS += " -> " + moveSelf;
+                        }
                     }
 
-                    if (moveElephant == i && unvisitedValves.Count > 0)
+                    if (moveElephant == i)
                     {
-                        if (!openedValves.Contains(elephantValve))
+                        pressurePerMinute += elephantValve.FlowRate;
+                        if (unvisitedValves.Count > 0)
                         {
-                            curPressure += moveElephant * elephantValve.FlowRate;
-                            openedValves.Add(elephantValve);
-                        }
-                        /*do
-                        {
-                            option2 = unvisitedValves[rand.Next(0, unvisitedValves.Count)];
-                        }
-                        while (option == option2);*/
-                        option2 = unvisitedValves.First(v => v.Name == pE.First());
-                        pE.RemoveAt(0);
+                            do
+                            {
+                                option2 = unvisitedValves[rand.Next(0, unvisitedValves.Count)];
+                            }
+                            while (option == option2);
 
-                        moveElephant = i - elephantValve.Tunnels[option2.Name] - 1;
-                        elephantValve = option2;
-                        unvisitedValves.Remove(option2);
-                        pathE += " -> " + option2.Name;
-                        timesE += " -> " + moveElephant;
+                            moveElephant = i + elephantValve.Tunnels[option2.Name] + 1;
+                            elephantValve = option2;
+                            unvisitedValves.Remove(option2);
+                            pathE += " -> " + option2.Name;
+                            timesE += " -> " + moveElephant;
+                        }
                     }
-
                     if (i <= 0)
                         break;
                 }
+                curPressure += pressurePerMinute;
                 n++;
 
                 if (curPressure > bestPressure)
@@ -199,12 +194,13 @@ namespace AdventOfCode
                     Console.WriteLine($"Current times Elephant: {timesE}");
                     Console.WriteLine($"Current pressure: {curPressure}");
                     bestPressure = curPressure;
+                    Console.ReadLine();
                     n = 0;
                 }
                 if (n > 1 && n % 1_000_000 == 0)
                     Console.WriteLine(n);
-                if (n == 100_000_000)
-                    break;
+                /*if (n == 200_000_000)
+                    break;*/
             }
 
             Console.WriteLine("\n\n " + bestPressure);
