@@ -40,7 +40,7 @@ namespace AdventOfCode
                 v.CalcDist(Valves);
 
             var curValve = Valves.First(v => v.Name == "AA");
-            int curPressure, bestPressure = int.MinValue;
+            int curPressure, bestPressure = 1766;// int.MinValue;
             string path = "AA";
             string times = "30";
             Random rand = new();
