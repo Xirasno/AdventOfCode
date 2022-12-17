@@ -120,13 +120,22 @@ namespace AdventOfCode
                                                                             // ##
             };
 
-            const long Steps = 100_000_000_000;
-            int shapeNr = 0;
-            long curLowest = 0, prevHeight = 0, previ = 0, height = 0;
+            const long Steps = 1_000_000_000_000;
+            int shapeNr = 0;// 4;
+            long curLowest = 0, height = 0;
             long floor = 0;
             int n = 0;
-            long times = 0;
-            /*for (long i = 0; i < Steps; i++, shapeNr++)
+            long i = 0;//414;
+            HashSet<(int, long)> firstSet, otherSet = new();
+
+            /*i = 0;// 415;
+            shapeNr = 0;// 5;
+            n = 0;// 2416;
+            height = 0;// 664;
+            for (; i < Steps; i += 1715)
+                height += 2711;
+            i -= 1715;*/
+            for (; i < Steps; i++, shapeNr++)
             {
                 bool stopped = false;
                 bool moveDown = false;
@@ -143,44 +152,6 @@ namespace AdventOfCode
                     if (n == movement.Length)
                         n = 0;
 
-                    /*if (i > 0 && n == 2 && !moveDown)
-                    {
-                        for (long y = curLowest; y > 0; y--)
-                        {
-                            Console.Write('|');
-                            for (int x = 1; x < 8; x++)
-                                Console.Write(grid.Contains((x, y)) ? '#' : '.');
-                            Console.WriteLine('|');
-                        }
-                        Console.WriteLine("+-------+\n\n\n\n\n\n\n\n\n\n\n");
-                        
-                        Console.WriteLine(i);
-                        Console.WriteLine(i - previ);
-                        Console.WriteLine(curLowest);
-                        Console.WriteLine(curLowest - prevHeight);
-                        Console.WriteLine(shapeNr);
-                        Console.WriteLine(grid.Max(u => u.Item2));
-                        Console.WriteLine();
-                        Console.WriteLine();
-                        Console.Clear();
-                        prevHeight = curLowest;
-                        previ = i;
-                        /*if (i > 1725 && i + 1715 < Steps)
-                        {
-                            i += 1715;
-                            times++;
-                            curLowest += 2711;
-                            n = 2;
-                            continue;
-                        }
-                        else if (i > 1725)
-                        {
-                            grid = grid.Select(x => (x.Item1, (x.Item2 + (long)(2711 * times)))).ToHashSet();
-                            newShape = new Shape(new HashSet<(int, long)>(shapes[shapeNr].shape));
-
-                            newShape.Move((3, curLowest + 4), grid, floor);
-                        }
-                    //}
                     if (moveDown)
                     {
                         if (!newShape.Move((0, -1), grid, floor))
@@ -214,76 +185,42 @@ namespace AdventOfCode
                     if (stopped)
                     {
                         curLowest = grid.Max(g => g.Item2);
-                        if (i + 1715 > Steps)
+                        /*if (i == 414)
                         {
-                            for (long y = curLowest; y > curLowest - 30; y--)
-                            {
-                                Console.Write('|');
-                                for (int x = 1; x < 8; x++)
-                                    Console.Write(grid.Contains((x, y)) ? '#' : '.');
-                                Console.WriteLine('|');
-                            }
-                            Console.WriteLine("\n\n\n");
+                            height += curLowest;
+                            curLowest = 0;
+                            firstSet = new HashSet<(int, long)>(grid);
+                            grid.Clear();
                         }
-                        if (i > 414 && (i - 414) % 1715 == 0)
+                        if (i >= (1715 + 414) && (i - 414) % 1715 == 0)
                         {
-                            Console.WriteLine(i);
-                            Console.WriteLine(i - previ);
-                            Console.WriteLine(curLowest);
-                            Console.WriteLine(curLowest - prevHeight);
-                            Console.WriteLine(shapeNr);
-                            Console.WriteLine(grid.Max(u => u.Item2));
-                            Console.WriteLine();
-                            Console.WriteLine();
-                            for (long y = curLowest; y > curLowest - 30; y--)
+                            bool b = true;
+                            if (otherSet.Count > 0)
                             {
-                                Console.Write('|');
-                                for (int x = 1; x < 8; x++)
-                                    Console.Write(grid.Contains((x, y)) ? '#' : '.');
-                                Console.WriteLine('|');
+                                foreach(var l in otherSet)
+                                    if (!grid.Contains(l))
+                                            b = false;
+                                foreach(var l in grid)
+                                    if (!otherSet.Contains(l))
+                                            b = false;
+
+                                Console.WriteLine(b);
+                                Console.WriteLine(curLowest);
+                                Console.WriteLine();
                             }
-                            Console.WriteLine("+-------+\n\n\n");
-                            prevHeight = curLowest;
-                            previ = i;
-                            /*while( i + 1715 < Steps)
-                            {
-                                i += 1715;
-                                times++;
-                                curLowest += 2711;
-                            }
-                            //curLowest += 1807;
-                            //Console.WriteLine(curLowest);
-                            /*grid = grid.Select(x => (x.Item1, (x.Item2 + (long)(2711 * times)))).ToHashSet();
-                            for (long y = curLowest; y > curLowest - 30; y--)
-                            {
-                                Console.Write('|');
-                                for (int x = 1; x < 8; x++)
-                                    Console.Write(grid.Contains((x, y)) ? '#' : '.');
-                                Console.WriteLine('|');
-                            }
-                            Console.WriteLine("\n\n\n");
-                        } 
+
+                            otherSet = new HashSet<(int, long)>(grid);
+                            height += curLowest;
+                            curLowest = 0;
+                            grid.Clear();
+                            //i += 1714;
+                        }*/
                         break;
                     }
                 }
-            }*/
-
-            for (long i = 0; i < Steps;)
-            {
-                if (i == 0)
-                {
-                    i += 2129;
-                    curLowest += 3375;
-                }    
-                else
-                {
-                    i += 1715;
-                    curLowest += 2711;
-                }
             }
-            curLowest += 1807;
-            var temp = grid.OrderByDescending(t => t.Item2);
-            Console.WriteLine(curLowest);
+
+            Console.WriteLine(height + curLowest);
             Console.ReadLine();
         }
 
