@@ -176,27 +176,6 @@ namespace AdventOfCode
                 }
                 return exposed;
             }
-
-            public int ExposedAir(HashSet<Cube> cubes)
-            {
-                int exposed = 0;
-                foreach (var c in cubes)
-                {
-                    if ((c.x == this.x + 1 || c.x == this.x - 1) && c.y == this.y && c.z == this.z)
-                    {
-                        exposed++;
-                    }
-                    if ((c.y == this.y + 1 || c.y == this.y - 1) && c.x == this.x && c.z == this.z)
-                    {
-                        exposed++;
-                    }
-                    if ((c.z == this.z + 1 || c.z == this.z - 1) && c.y == this.y && c.x == this.x)
-                    {
-                        exposed++;
-                    }
-                }
-                return exposed;
-            }
         }
     }
 }
