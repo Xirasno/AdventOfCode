@@ -122,19 +122,18 @@ namespace AdventOfCode
 
             const long Steps = 1_000_000_000_000;
             int shapeNr = 0;// 4;
-            long curLowest = 0, height = 0;
+            long curLowest = 0, height;
             long floor = 0;
             int n = 0;
             long i = 0;//414;
             HashSet<(int, long)> firstSet, otherSet = new();
 
-            /*i = 0;// 415;
-            shapeNr = 0;// 5;
-            n = 0;// 2416;
-            height = 0;// 664;
-            for (; i < Steps; i += 1715)
+            i = 1715;
+            shapeNr = 0;
+            n = 10033;
+            height = 2732;
+            for (; i + 1715 < Steps; i += 1715)
                 height += 2711;
-            i -= 1715;*/
             for (; i < Steps; i++, shapeNr++)
             {
                 bool stopped = false;
@@ -185,14 +184,14 @@ namespace AdventOfCode
                     if (stopped)
                     {
                         curLowest = grid.Max(g => g.Item2);
-                        /*if (i == 414)
+                        /*if (i == 1715)
                         {
                             height += curLowest;
                             curLowest = 0;
                             firstSet = new HashSet<(int, long)>(grid);
                             grid.Clear();
                         }
-                        if (i >= (1715 + 414) && (i - 414) % 1715 == 0)
+                        if (i >= 1715 && i  % 1715 == 0)
                         {
                             bool b = true;
                             if (otherSet.Count > 0)
@@ -224,7 +223,8 @@ namespace AdventOfCode
             Console.ReadLine();
         }
 
-        // First movement = 1724 steps with height 2744
+        // First movement = 1715 steps with height 2733
+        // n = 10033;
         // subsequent movement = 1715 steps with height 2711
         // 58309036 * 2711 + 2744 + 2438
 
