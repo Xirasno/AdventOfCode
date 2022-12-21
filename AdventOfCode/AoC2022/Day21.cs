@@ -196,50 +196,6 @@ namespace AdventOfCode
                     }
                 }
             }
-
-            public long FindNumber(List<Monkey> monkeys, string lr)
-            {
-                if (Name == "humn")
-                    Console.WriteLine(lr);
-                if (Number != null)
-                    return Number.Value;
-
-                long monkey1Nr;
-                long monkey2Nr;
-
-                if (Name == "root")
-                {
-                    monkey1Nr = monkeys.First(m => m.Name == this.Monkey1).FindNumber(monkeys, "left");
-                    monkey2Nr = monkeys.First(m => m.Name == this.Monkey2).FindNumber(monkeys, "right");                
-                }
-
-                monkey1Nr = monkeys.First(m => m.Name == this.Monkey1).FindNumber(monkeys, lr);
-                monkey2Nr = monkeys.First(m => m.Name == this.Monkey2).FindNumber(monkeys, lr);
-
-                long result;
-                switch (Operation)
-                {
-                    case "+":
-                        result = monkey1Nr + monkey2Nr;
-                        this.Number = result;
-                        return result;
-                    case "-":
-                        result = monkey1Nr - monkey2Nr;
-                        this.Number = result;
-                        return result;
-                    case "*":
-                        result = monkey1Nr * monkey2Nr;
-                        this.Number = result;
-                        return result;
-                    case "/":
-                        result = monkey1Nr / monkey2Nr;
-                        this.Number = result;
-                        return result;
-                        
-                    default:
-                        throw new ArgumentException($"Operator unknown: {this.Operation}; Monkey: {this.Name}");
-                }
-            }
         }
     }
 }
