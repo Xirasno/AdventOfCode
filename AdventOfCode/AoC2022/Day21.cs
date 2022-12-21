@@ -32,7 +32,7 @@ namespace AdventOfCode
 
         public static void Part2()
         {
-            /*List<Monkey> Monkeys = new();
+            List<Monkey> Monkeys = new();
             string input;
             while ((input = Console.ReadLine()) != "")
             {
@@ -54,10 +54,9 @@ namespace AdventOfCode
             }
             var Root = Monkeys.First(m => m.Name == "root");
             var Human = Monkeys.First(m => m.Name == "humn");
-            Console.WriteLine(Root.FindOperation(Monkeys));*/
+            Console.WriteLine(Root.FindOperation(Monkeys));
 
-            // 51520000000
-            for (long i = 3509819803060; ; i++)
+            for (long i = 3509819803064; ; i++)
             {
                 if (i % 10_000_000 == 0)
                     Console.WriteLine(i);
@@ -68,7 +67,7 @@ namespace AdventOfCode
                     break;
                 }
             }
-            //Console.WriteLine(15011499297709004 / 4277);
+
             // Test input
             /*for (long i = 0; ; i++)
             {
