@@ -102,7 +102,6 @@ namespace AdventOfCode
 
         public static void Part2()
         {
-            {
                 List<Elf> elves = new();
                 string input;
                 int j = 5;
@@ -193,7 +192,6 @@ namespace AdventOfCode
                 Console.WriteLine($"Smallest rectangle: X: {minX}->{maxX}; Y: {minY}->{maxY}");*/
                 Console.WriteLine(t);
                 Console.ReadLine();
-            }
         }
 
         private static bool AdjacentElf(this Elf elf, List<Elf> elves)
@@ -252,11 +250,6 @@ namespace AdventOfCode
                     break;
             }
             return false;
-        }
-
-        private static bool HasElf(List<Elf> elves, int x, int y)
-        {
-            return elves.Any(e => e.X == x && e.Y == y);
         }
 
         public class Elf
