@@ -31,7 +31,7 @@ namespace AdventOfCode
             };
 
             bool done = false;
-            for (int t = 0; t < 10 || done; t++)
+            for (int t = 0; t < 10 && !done; t++)
             {
                 done = true;
                 foreach (var elf in elves)
