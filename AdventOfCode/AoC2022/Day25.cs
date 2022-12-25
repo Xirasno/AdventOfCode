@@ -9,20 +9,16 @@ namespace AdventOfCode
 {
     public static class AoC2022Day25
     {
-        static Dictionary<int, string> SNAFU;
+        static Dictionary<string, string> SNAFU;
         public static void Part1()
         {
             SNAFU = new()
             {
-                { -2, "=" },
-                { -1, "-" },
-                { 0, "0" },
-                { 1, "1" },
-                { 2, "2" },
-                { 3, "1=" },
-                { 4, "1-" },
-                { 8, "2=" },
-                { 9, "2-" },
+                { "=", "-" },
+                { "-", "0" },
+                { "0", "1" },
+                { "1", "2" },
+                { "2", "=" },
             };  
             string input;
             List<long> numbers = new();
@@ -67,36 +63,73 @@ namespace AdventOfCode
         34978907874317*/
         private static string ConvertToSNAFU(long number)
         {
-            for(int a = 2; a <= 2; a++)
-                for(int b = -1; b <= 2; b++)
-                for(int c = 1; c <= 2; c++)
-                for(int d = -1; d <= 2; d++)
-                for(int e = 1; e <= 2; e++)
-                for(int f = 1; f <= 2; f++)
-                for(int g = 0; g <= 2; g++)
-                for(int h = -2; h <= 2; h++)
-                for(int i = -2; i <= 2; i++)
-                for(int j = -2; j <= 2; j++)
-                for(int k = -2; k <= 2; k++)
-                for(int l = -2; l <= 2; l++)
-                for(int m = -2; m <= 2; m++)
-                for(int n = -2; n <= 2; n++)
-                for(int o = -2; o <= 2; o++)
-                for(int p = -2; p <= 2; p++)
-                for(int q = -2; q <= 2; q++)
-                for(int r = -2; r <= 2; r++)
-                for(int s = -2; s <= 2; s++)
-                for(int t = -2; t <= 2; t++)
+            var lowestPower = 0;
+            for (int i = 100; i >= 0; i--)
+                if (number / (long)Math.Pow(5, i) > 0)
                 {
-                    //var snafuString = SNAFU[n] + SNAFU[o] + SNAFU[p] + SNAFU[q] + SNAFU[r] + SNAFU[s];
-                    var snafuString = SNAFU[a] + SNAFU[b] + SNAFU[c] + SNAFU[d] + SNAFU[e] + SNAFU[f] + SNAFU[g] + SNAFU[h] + SNAFU[i] + SNAFU[j] + SNAFU[k] + SNAFU[l] + SNAFU[m] + SNAFU[n] + SNAFU[o] + SNAFU[p] + SNAFU[q] + SNAFU[r] + SNAFU[s] + SNAFU[t];
-                    var parsed = ParseSNAFU(snafuString);
-                    if (parsed > number)
-                        Console.WriteLine("Help");
-                    if (parsed == number)
-                        return snafuString;
-                }       
-            return "Failed";
+                    lowestPower = i;
+                    break;
+                }
+            
+            string digit = "";
+            for (int i = lowestPower; i >= 0; i--)
+            {
+                var newNumber = number / (long)Math.Pow(5, i);
+                digit += newNumber;
+                number -= newNumber * (long)Math.Pow(5, i);
+            }
+
+            var convertedDigit = "";
+            var saved = false;
+            switch (digit.ToString()[^1])
+            {
+                case '4':
+                    convertedDigit += "-";
+                    saved = true;
+                    break;
+                case '3':
+                    convertedDigit += "=";
+                    saved = true;
+                    break;
+                default:
+                    convertedDigit += digit.ToString()[^1];
+                    break;
+            }
+
+            var endChar = "";
+            for (int c = digit.ToString().Length - 2; c >= 0; c--)
+            {
+                switch (digit.ToString()[c])
+                {
+                    case '4':
+                        endChar = convertedDigit[^1].ToString();
+                        if (saved)
+                            convertedDigit = SNAFU["-"] + convertedDigit;
+                        else convertedDigit = "-" + convertedDigit;
+                        saved = true;
+                        break;
+                    case '3':
+                        endChar = convertedDigit[^1].ToString();
+                        if (saved)
+                            convertedDigit = SNAFU["="] + convertedDigit;
+                        else convertedDigit = "=" + convertedDigit;
+                        saved = true;
+                        break;
+                    case '2':
+                        if (saved)
+                            convertedDigit = SNAFU[digit.ToString()[c].ToString()] + convertedDigit;
+                        else convertedDigit = digit.ToString()[c] + convertedDigit;
+                        break;
+                    default:
+                        if (saved)
+                            convertedDigit = SNAFU[digit.ToString()[c].ToString()] + convertedDigit;
+                        else convertedDigit = digit.ToString()[c] + convertedDigit;
+                        saved = false;
+                        break;
+                }
+            }
+
+            return convertedDigit;
         }
 
     }
