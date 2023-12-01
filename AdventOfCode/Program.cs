@@ -34,7 +34,11 @@ namespace AdventOfCode
     {
         public static void Part1()
         {
-            string input = Console.ReadLine();
+            string input;
+            while ((input = Console.ReadLine()) != "")
+            {
+
+            }
             Console.WriteLine(input);
         }
 
