@@ -17,9 +17,9 @@ namespace AdventOfCode
             Console.WriteLine(input);
         }
 
-        public static void Part2()
+        /*public static void Part2()
         {
 
-        }
+        }*/
     }
 }
