@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static AdventOfCode.AoC2023Day05;
 
 namespace AdventOfCode
 {
@@ -13,7 +11,7 @@ namespace AdventOfCode
         {
             string input = Console.ReadLine();
             Regex numbers = new(@"\d+");
-            Dictionary<long,Seed> seeds = numbers.Matches(input).Select(m => long.Parse(m.Value)).ToDictionary(m => m, m => new Seed(m, false));
+            Dictionary<long, Seed> seeds = numbers.Matches(input).Select(m => long.Parse(m.Value)).ToDictionary(m => m, m => new Seed(m, false));
             string prevLine = Console.ReadLine();
             while (input != "" || prevLine != "")
             {
@@ -37,7 +35,7 @@ namespace AdventOfCode
                 {
                     if (!seed.Value.Edited && seed.Value.Number >= sourceRange && seed.Value.Number < sourceRange + rangeLength)
                     {
-                        seeds[seed.Key] = new (destinationRange + (seed.Value.Number - sourceRange), true);
+                        seeds[seed.Key] = new(destinationRange + (seed.Value.Number - sourceRange), true);
                     }
                 }
             }
@@ -78,17 +76,17 @@ namespace AdventOfCode
                     seeds = seeds.OrderBy(s => s.Start).ToList();
                     continue;
                 }
-                    
+
                 if (input == "")
                     continue;
 
                 var ranges = numbers.Matches(input).Select(m => long.Parse(m.Value)).ToList();
                 long destinationRange = ranges[0], sourceRange = ranges[1], rangeLength = ranges[2];
-
+                long sourceEnd = sourceRange + rangeLength, destinationEnd = destinationRange + rangeLength;
                 List<Seed2> newSeeds = new();
                 foreach (var seed in seeds)
                 {
-                    if (!seed.Edited && sourceRange + rangeLength >= seed.Start && sourceRange <= seed.End)
+                    if (!seed.Edited && Math.Max(sourceRange, seed.Start) <= Math.Min(sourceRange + rangeLength, seed.End))
                     {
                         // Starts outside the range <----|-->---|
                         if (seed.Start < sourceRange && seed.End <= sourceRange + rangeLength)
@@ -97,7 +95,7 @@ namespace AdventOfCode
                             newSeeds.Add(new(destinationRange, destinationRange + (seed.End - sourceRange), true));
                         }
                         // Ends outside the range |---<----|-->
-                        if (seed.Start >= sourceRange && seed.End > sourceRange + rangeLength)
+                        if (sourceRange <= seed.Start && sourceRange + rangeLength < seed.End)
                         {
                             newSeeds.Add(new(destinationRange + (seed.Start - sourceRange), destinationRange + rangeLength, true));
                             newSeeds.Add(new(sourceRange + rangeLength, seed.End, true));
@@ -107,8 +105,8 @@ namespace AdventOfCode
                         {
                             newSeeds.Add(new(destinationRange + (seed.Start - sourceRange), destinationRange + (seed.End - sourceRange), true));
                         }
-                        // Range fully inside seeds <---|------|--->
-                        if (seed.Start < sourceRange && seed.End > sourceRange + rangeLength)
+                        // Fully encapsulating the range <---|------|--->
+                        if (seed.Start < sourceRange && sourceRange + rangeLength < seed.End)
                         {
                             newSeeds.Add(new(seed.Start, sourceRange, true));
                             newSeeds.Add(new(destinationRange, destinationRange + rangeLength, true));
@@ -131,7 +129,11 @@ namespace AdventOfCode
                 seedCounts = seedCounts.Distinct().ToList();
                 if (seedCounts.Count > 1)
                 {
-                    Console.WriteLine("Help");
+                    Console.WriteLine("Seeds differ");
+                }
+                if (seeds.Any(s => seeds.Any(s2 => s2.Start != s.Start && Math.Max(s.Start, s2.Start) <= Math.Min(s.End, s2.End))))
+                {
+                    Console.WriteLine("Seeds overlap");
                 }
 
             }
