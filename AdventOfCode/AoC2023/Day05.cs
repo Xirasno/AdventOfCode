@@ -81,41 +81,41 @@ namespace AdventOfCode
                     continue;
 
                 var ranges = numbers.Matches(input).Select(m => long.Parse(m.Value)).ToList();
-                long destinationRange = ranges[0], sourceRange = ranges[1], rangeLength = ranges[2];
-                long sourceEnd = sourceRange + rangeLength, destinationEnd = destinationRange + rangeLength;
+                long destinationStart = ranges[0], sourceStart = ranges[1], rangeLength = ranges[2];
+                long sourceEnd = sourceStart + rangeLength, destinationEnd = destinationStart + rangeLength;
                 List<Seed2> newSeeds = new();
                 foreach (var seed in seeds)
                 {
-                    if (!seed.Edited && Math.Max(sourceRange, seed.Start) <= Math.Min(sourceRange + rangeLength, seed.End))
+                    if (!seed.Edited && Math.Max(sourceStart, seed.Start) <= Math.Min(sourceStart + rangeLength, seed.End))
                     {
                         // Starts outside the range <----|-->---|
-                        if (seed.Start < sourceRange && seed.End <= sourceRange + rangeLength)
+                        if (seed.Start < sourceStart && seed.End <= sourceEnd)
                         {
-                            newSeeds.Add(new(seed.Start, sourceRange, true));
-                            newSeeds.Add(new(destinationRange, destinationRange + (seed.End - sourceRange), true));
+                            newSeeds.Add(new(seed.Start, sourceStart, false));
+                            newSeeds.Add(new(destinationStart, destinationStart + (seed.End - sourceStart), true));
                         }
                         // Ends outside the range |---<----|-->
-                        if (sourceRange <= seed.Start && sourceRange + rangeLength < seed.End)
+                        if (sourceStart <= seed.Start && sourceStart + rangeLength < seed.End)
                         {
-                            newSeeds.Add(new(destinationRange + (seed.Start - sourceRange), destinationRange + rangeLength, true));
-                            newSeeds.Add(new(sourceRange + rangeLength, seed.End, true));
+                            newSeeds.Add(new(destinationStart + (seed.Start - sourceStart), destinationEnd, true));
+                            newSeeds.Add(new(sourceEnd, seed.End, false));
                         }
                         // Fully within the range |---<------>---|
-                        if (sourceRange <= seed.Start && seed.End <= sourceRange + rangeLength)
+                        if (sourceStart <= seed.Start && seed.End <= sourceStart + rangeLength)
                         {
-                            newSeeds.Add(new(destinationRange + (seed.Start - sourceRange), destinationRange + (seed.End - sourceRange), true));
+                            newSeeds.Add(new(destinationStart + (seed.Start - sourceStart), destinationStart + (seed.End - sourceStart), true));
                         }
                         // Fully encapsulating the range <---|------|--->
-                        if (seed.Start < sourceRange && sourceRange + rangeLength < seed.End)
+                        if (seed.Start < sourceStart && sourceStart + rangeLength < seed.End)
                         {
-                            newSeeds.Add(new(seed.Start, sourceRange, true));
-                            newSeeds.Add(new(destinationRange, destinationRange + rangeLength, true));
-                            newSeeds.Add(new(sourceRange + rangeLength, seed.End, true));
+                            newSeeds.Add(new(seed.Start, sourceStart, false));
+                            newSeeds.Add(new(destinationStart, destinationEnd, true));
+                            newSeeds.Add(new(sourceEnd, seed.End, false));
                         }
                     }
                     else
                     {
-                        newSeeds.Add(new(seed.Start, seed.End, false));
+                        newSeeds.Add(new(seed.Start, seed.End, seed.Edited));
                     }
                 }
                 seeds = new(newSeeds);
@@ -131,10 +131,10 @@ namespace AdventOfCode
                 {
                     Console.WriteLine("Seeds differ");
                 }
-                if (seeds.Any(s => seeds.Any(s2 => s2.Start != s.Start && Math.Max(s.Start, s2.Start) <= Math.Min(s.End, s2.End))))
+                /*if (seeds.Any(s => seeds.Any(s2 => s2.Start != s.Start && Math.Max(s.Start, s2.Start) <= Math.Min(s.End, s2.End))))
                 {
                     Console.WriteLine("Seeds overlap");
-                }
+                }*/
 
             }
             var t = seeds.Select(s => s.Start).ToList();
@@ -142,6 +142,7 @@ namespace AdventOfCode
             Console.WriteLine(seeds.Select(s => s.Start).Min());
 
             // 10954309
+            // 1493866
         }
 
         public struct Seed
