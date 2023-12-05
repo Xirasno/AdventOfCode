@@ -131,18 +131,11 @@ namespace AdventOfCode
                 {
                     Console.WriteLine("Seeds differ");
                 }
-                /*if (seeds.Any(s => seeds.Any(s2 => s2.Start != s.Start && Math.Max(s.Start, s2.Start) <= Math.Min(s.End, s2.End))))
-                {
-                    Console.WriteLine("Seeds overlap");
-                }*/
 
             }
             var t = seeds.Select(s => s.Start).ToList();
             t.Sort();
             Console.WriteLine(seeds.Select(s => s.Start).Min());
-
-            // 10954309
-            // 1493866
         }
 
         public struct Seed
