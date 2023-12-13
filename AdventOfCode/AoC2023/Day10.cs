@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode
 {
@@ -83,7 +82,7 @@ namespace AdventOfCode
                 length++;
             }
             while (newLoc.Type != start.Type);
-            
+
             Console.WriteLine(length / 2);
         }
 
@@ -91,25 +90,37 @@ namespace AdventOfCode
         {
             string input;
             int y = 0;
-            int dims = 10;
+            int dims = 500;
             Pipe[,] pipes = new Pipe[dims, dims];
 
             Pipe start = new Pipe();
             while ((input = Console.ReadLine()) != "")
             {
-                for (int x = 0; x < input.Length; x++)
+                for (int x = 0, xn = 0; x < input.Length; x++, xn += 3)
                 {
                     if (input[x] != '.')
                     {
                         if (input[x] == 'S')
-                        {
-                            start = new Pipe(x, y, input[x]);
-                        }
-                        pipes[x, y] = new Pipe(x, y, input[x]);
+                            start = new Pipe(xn + 1, y + 1, input[x]);
+
+                        if (input[x] == '|' || input[x] == 'J' || input[x] == 'L' || input[x] == 'S')
+                            pipes[xn + 1, y] = new Pipe(xn + 1, y, '|');
+
+                        if (input[x] == '-' || input[x] == 'J' || input[x] == '7' || (input[x] == 'S' && (input[x - 1] == '-' || input[x - 1] == 'F' || input[x - 1] == 'L')))
+                            pipes[xn, y + 1] = new Pipe(xn, y + 1, '-');
+
+                        pipes[xn + 1, y + 1] = new Pipe(xn + 1, y + 1, input[x]);
+
+                        if (input[x] == '-' || input[x] == 'L' || input[x] == 'F' || (input[x] == 'S' && (input[x - 1] == '-' || input[x - 1] == '7' || input[x - 1] == 'J')))
+                            pipes[xn + 2, y + 1] = new Pipe(xn + 2, y + 1, '-');
+
+                        if (input[x] == '|' || input[x] == '7' || input[x] == 'F' || input[x] == 'S')
+                            pipes[xn + 1, y + 2] = new Pipe(xn + 1, y + 2, '|');
                     }
                 }
-                y++;
+                y += 3;
             }
+
             if (start.x != 0 && (pipes[start.x - 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x - 1, start.y].Connection2 == (start.x, start.y)))
             {
                 if (start.x != dims - 1 && pipes[start.x + 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x + 1, start.y].Connection2 == (start.x, start.y))
@@ -117,37 +128,36 @@ namespace AdventOfCode
                     start.Connection1 = (start.x - 1, start.y);
                     start.Connection2 = (start.x + 1, start.y);
                 }
-                if (start.y != 0 && (pipes[start.x, start.y - 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y - 1].Connection2 == (start.x, start.y)))
+                if (start.y != 0 && pipes[start.x, start.y - 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y - 1].Connection2 == (start.x, start.y))
                 { // J
                     start.Connection1 = (start.x - 1, start.y);
                     start.Connection2 = (start.x, start.y - 1);
                 }
-                if (start.y != dims - 1 && (pipes[start.x, start.y + 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y + 1].Connection2 == (start.x, start.y)))
+                if (start.y != dims - 1 && pipes[start.x, start.y + 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y + 1].Connection2 == (start.x, start.y))
                 { // 7
                     start.Connection1 = (start.x - 1, start.y);
                     start.Connection2 = (start.x, start.y + 1);
                 }
             }
-            else if (start.y != 0 && (pipes[start.x, start.y - 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y - 1].Connection2 == (start.x, start.y)))
-            {
-                if (start.y != (dims - 1) && (pipes[start.x, start.y + 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y + 1].Connection2 == (start.x, start.y)))
-                { // |
-                    start.Connection1 = (start.x, start.y - 1);
-                    start.Connection2 = (start.x, start.y + 1);
-                }
-                if (start.x != (dims - 1) && (pipes[start.x + 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x + 1, start.y].Connection2 == (start.x, start.y)))
-                { // L
-                    start.Connection1 = (start.x, start.y - 1);
-                    start.Connection2 = (start.x + 1, start.y);
-                }
-            }
             else if (start.y != (dims - 1) && (pipes[start.x, start.y + 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y + 1].Connection2 == (start.x, start.y))
-                && (start.x != (dims - 1) && (pipes[start.x + 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x + 1, start.y].Connection2 == (start.x, start.y))))
+                && (start.x != (dims - 1) && pipes[start.x + 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x + 1, start.y].Connection2 == (start.x, start.y)))
             { // F
                 start.Connection1 = (start.x, start.y + 1);
                 start.Connection2 = (start.x + 1, start.y);
             }
-
+            else if (start.y != 0 && pipes[start.x, start.y - 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y - 1].Connection2 == (start.x, start.y))
+            {
+                if (start.x != (dims - 1) && pipes[start.x + 1, start.y].Connection1 == (start.x, start.y) || pipes[start.x + 1, start.y].Connection2 == (start.x, start.y))
+                { // L
+                    start.Connection1 = (start.x, start.y - 1);
+                    start.Connection2 = (start.x + 1, start.y);
+                }
+                if (start.y != (dims - 1) && pipes[start.x, start.y + 1].Connection1 == (start.x, start.y) || pipes[start.x, start.y + 1].Connection2 == (start.x, start.y))
+                { // |
+                    start.Connection1 = (start.x, start.y - 1);
+                    start.Connection2 = (start.x, start.y + 1);
+                }
+            }
             pipes[start.x, start.y] = start;
 
             Pipe newLoc = start;
@@ -185,7 +195,7 @@ namespace AdventOfCode
 
 
             Console.WriteLine(enclosed);
-         }
+        }
 
         public static bool IsUnenclosed(Pipe[,] pipes, List<Pipe> loop, List<(int x, int y)> unenClosed, int x, int y)
         {
@@ -206,260 +216,6 @@ namespace AdventOfCode
 
                 if (unenClosed.Contains(curNode) || curNode.x == 0 || curNode.x == pipes.GetLength(0) - 1 || curNode.y == 0 || curNode.y == pipes.GetLength(0) - 1)
                     return true;
-
-                char curType = pipes[curNode.x, curNode.y].Type;
-
-                if (loop.Contains(pipes[curNode.x - 1, curNode.y]) && (curType == '7' || curType == 'J' || curType == '-' || curType == '\0') && pipes[curNode.x - 1, curNode.y].Type != '|')
-                {
-                    if ((pipes[curNode.x - 1, curNode.y].Type == '7' || pipes[curNode.x - 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y]) || pipes[curNode.x - 1, curNode.y - 1].Type == 'J' || pipes[curNode.x - 1, curNode.y - 1].Type == 'L' || pipes[curNode.x - 1, curNode.y - 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x - 1, curNode.y));
-                        }
-                        else 
-                            queue.Enqueue((curNode.x - 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x - 1, curNode.y].Type == 'J' || pipes[curNode.x - 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y]) || pipes[curNode.x - 1, curNode.y + 1].Type == '7' ||  pipes[curNode.x - 1, curNode.y + 1].Type == 'F' || pipes[curNode.x - 1, curNode.y + 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x - 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x - 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x - 1, curNode.y].Type == 'F' || pipes[curNode.x - 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y]) || pipes[curNode.x - 1, curNode.y - 1].Type == 'L' ||  pipes[curNode.x - 1, curNode.y - 1].Type == 'J' || pipes[curNode.x - 1, curNode.y - 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x - 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x - 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x - 1, curNode.y].Type == 'L' || pipes[curNode.x - 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y]) || pipes[curNode.x - 1, curNode.y + 1].Type == 'F' ||  pipes[curNode.x - 1, curNode.y + 1].Type == '7' || pipes[curNode.x - 1, curNode.y + 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x - 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x - 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x - 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y - 1]) || pipes[curNode.x - 1, curNode.y - 1].Type != '|' || pipes[curNode.x - 1, curNode.y + 1].Type != '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type != '|')
-                                queue.Enqueue((curNode.x - 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x - 1, curNode.y));
-                    }
-                }
-
-                if (loop.Contains(pipes[curNode.x + 1, curNode.y]) && (curType == 'F' || curType == 'L' || curType == '-' || curType == '\0') && pipes[curNode.x + 1, curNode.y].Type != '|')
-                {
-                    if ((pipes[curNode.x + 1, curNode.y].Type == '7' || pipes[curNode.x + 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y]) || pipes[curNode.x + 1, curNode.y - 1].Type == 'J' ||  pipes[curNode.x + 1, curNode.y - 1].Type == 'L' || pipes[curNode.x + 1, curNode.y - 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x + 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x + 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x + 1, curNode.y].Type == 'J' || pipes[curNode.x + 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y]) || pipes[curNode.x + 1, curNode.y + 1].Type == '7' ||  pipes[curNode.x + 1, curNode.y + 1].Type == 'F' || pipes[curNode.x + 1, curNode.y + 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x + 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x + 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x + 1, curNode.y].Type == 'F' || pipes[curNode.x + 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y]) || pipes[curNode.x + 1, curNode.y - 1].Type == 'L' ||  pipes[curNode.x + 1, curNode.y - 1].Type == 'J' || pipes[curNode.x + 1, curNode.y - 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x + 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x + 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x + 1, curNode.y].Type == 'L' || pipes[curNode.x + 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y]) || pipes[curNode.x + 1, curNode.y + 1].Type == 'F' || pipes[curNode.x + 1, curNode.y + 1].Type == '7' || pipes[curNode.x + 1, curNode.y + 1].Type == '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == '-')
-                                queue.Enqueue((curNode.x + 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x + 1, curNode.y));
-                    }
-
-                    else if ((pipes[curNode.x + 1, curNode.y].Type == '-')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y - 1]) || pipes[curNode.x + 1, curNode.y - 1].Type != '|' || pipes[curNode.x + 1, curNode.y + 1].Type != '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type != '|')
-                                queue.Enqueue((curNode.x + 1, curNode.y));
-                        }
-                        else
-                            queue.Enqueue((curNode.x + 1, curNode.y));
-                    }
-                }
-
-                if (loop.Contains(pipes[curNode.x, curNode.y - 1]) && (curType == 'J' || curType == 'L' || curType == '|' || curType == '\0') && pipes[curNode.x, curNode.y - 1].Type != '-')
-                {
-                    if ((pipes[curNode.x, curNode.y - 1].Type == 'J')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y - 1]) || pipes[curNode.x + 1, curNode.y - 1].Type == 'L' ||  pipes[curNode.x + 1, curNode.y - 1].Type == 'F' || pipes[curNode.x + 1, curNode.y - 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y - 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y - 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y - 1].Type == 'L')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y - 1]) || pipes[curNode.x - 1, curNode.y - 1].Type == 'J' ||  pipes[curNode.x - 1, curNode.y - 1].Type == '7' || pipes[curNode.x - 1, curNode.y - 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y - 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y - 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y - 1].Type == '7')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y - 1]) || pipes[curNode.x + 1, curNode.y - 1].Type == 'F' || pipes[curNode.x + 1, curNode.y - 1].Type == 'L' || pipes[curNode.x + 1, curNode.y - 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y - 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y - 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y - 1].Type == 'F')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y - 1]) || pipes[curNode.x - 1, curNode.y - 1].Type == '7' || pipes[curNode.x - 1, curNode.y - 1].Type == 'J' || pipes[curNode.x - 1, curNode.y - 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y - 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y - 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y - 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y - 1]) || pipes[curNode.x - 1, curNode.y - 1].Type != '-' || pipes[curNode.x + 1, curNode.y - 1].Type != '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type != '-')
-                                queue.Enqueue((curNode.x, curNode.y - 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y - 1));
-                    }
-                }
-
-                if (loop.Contains(pipes[curNode.x, curNode.y + 1]) && (curType == '7' || curType == 'F' || curType == '|' || curType == '\0') && pipes[curNode.x, curNode.y + 1].Type != '-')
-                {
-                    if ((pipes[curNode.x, curNode.y + 1].Type == 'J' || pipes[curNode.x, curNode.y + 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y + 1]) || pipes[curNode.x + 1, curNode.y + 1].Type == 'L' ||  pipes[curNode.x + 1, curNode.y + 1].Type == 'F' || pipes[curNode.x + 1, curNode.y + 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y + 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y + 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y + 1].Type == 'L' || pipes[curNode.x, curNode.y + 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y + 1]) || pipes[curNode.x - 1, curNode.y + 1].Type == 'J' ||  pipes[curNode.x - 1, curNode.y + 1].Type == '7' || pipes[curNode.x - 1, curNode.y + 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y + 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y + 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y + 1].Type == '7' || pipes[curNode.x, curNode.y + 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x + 1, curNode.y + 1]) || pipes[curNode.x + 1, curNode.y + 1].Type == 'F' || pipes[curNode.x + 1, curNode.y + 1].Type == 'L' || pipes[curNode.x + 1, curNode.y + 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'J' || pipes[curNode.x, curNode.y].Type == '7' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y + 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y + 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y + 1].Type == 'F' || pipes[curNode.x, curNode.y + 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y + 1]) || pipes[curNode.x - 1, curNode.y + 1].Type == '7' || pipes[curNode.x - 1, curNode.y + 1].Type == 'J' || pipes[curNode.x - 1, curNode.y + 1].Type == '|'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type == 'L' || pipes[curNode.x, curNode.y].Type == 'F' || pipes[curNode.x, curNode.y].Type == '|')
-                                queue.Enqueue((curNode.x, curNode.y + 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y + 1));
-                    }
-
-                    else if ((pipes[curNode.x, curNode.y + 1].Type == '|')
-                        && (!loop.Contains(pipes[curNode.x - 1, curNode.y +- 1]) || pipes[curNode.x - 1, curNode.y + 1].Type != '-' || pipes[curNode.x + 1, curNode.y + 1].Type != '-'))
-                    {
-                        if (loop.Contains(pipes[curNode.x, curNode.y]))
-                        {
-                            if (pipes[curNode.x, curNode.y].Type != '-')
-                                queue.Enqueue((curNode.x, curNode.y + 1));
-                        }
-                        else
-                            queue.Enqueue((curNode.x, curNode.y + 1));
-                    }
-                }
 
                 if (!loop.Contains(pipes[curNode.x - 1, curNode.y]))
                     queue.Enqueue((curNode.x - 1, curNode.y));
